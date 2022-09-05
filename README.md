@@ -30,10 +30,11 @@ Markdown記法で書かれたテキストファイルを慶應通信のレポー
 * pandoc-crossref
 
 # 手順概要
-## PCに必要なソフトウェア(tex, pandoc, pandoc-crossref)をインストールする
-## レポートをMarkdown記法で書く
-## 対象ファイル(レポート)と変換用ファイル群を同じディレクトリに置き、「ターミナル」でその作業ディレクトリを開く
-## 変換用の実行ファイルを実行する
+* PCに必要なソフトウェア(tex, pandoc, pandoc-crossref)をインストールする
+* レポートをMarkdown記法で書く
+* 変換用ファイル群をダウンロード、対象ファイル(レポート)と同じディレクトリに置く
+* 「ターミナル」で上記作業ディレクトリを開く
+* 変換用の実行ファイルを実行する
 
 # 手順詳細
 ## インストール方法 （所要時間2時間以上かかる見込み）
@@ -62,11 +63,11 @@ brew install pandoc pandoc-crossref
 Markdown記法の参考リンク: https://qiita.com/kamorits/items/6f342da395ad57468ae3
 特に見出し、引用、注釈をよく使う
 
-## 変換用ファイル群をダウンロードする
+## 変換用ファイル群をダウンロード、対象ファイル(レポート)と同じディレクトリに置く
 以下のリンクをブラウザにコピー＆貼り付けしてダウンロード、Zipファイルを展開して「bin」フォルダの中身を確認
 https://github.com/tmo1031/kcc-tips/archive/refs/heads/main.zip
 
-## 対象ファイル(レポート)と変換用ファイル群を同じディレクトリに置き、「ターミナル」でその作業ディレクトリを開く
+## 「ターミナル」でその作業ディレクトリを開く
 参考リンク: https://www.webdesignleaves.com/pr/plugins/mac_terminal_basics_01.html
 
 ## 変換用の実行ファイルを実行する
