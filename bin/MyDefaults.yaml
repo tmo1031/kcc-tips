@@ -1,0 +1,5 @@
+from: markdown-auto_identifiers
+resource-path: ['./']
+number-sections: true
+citeproc: true
+cite-method: natbib
