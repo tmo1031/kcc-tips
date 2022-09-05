@@ -1,0 +1,7 @@
+from: markdown-auto_identifiers
+resource-path: ['./']
+reference-doc: ./MyReference.docx
+template: ./default.latex
+number-sections: true
+citeproc: true
+cite-method: natbib
