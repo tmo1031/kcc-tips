@@ -1,3 +1,9 @@
+.DS_Store
+Thumbs.db
+# Office specific
+~$*
+*.tmp
+
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof
