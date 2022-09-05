@@ -40,7 +40,7 @@ Markdown記法で書かれたテキストファイルを慶應通信のレポー
 ## インストール方法 （所要時間2時間以上かかる見込み）
 ※Mac で Homebrew を使う方法
 
-* Xcode (CommandLineTools for Xcode) のインストール
+### Xcode (CommandLineTools for Xcode) のインストール
 
 「ターミナル」で下記コマンドを実行
 
@@ -48,14 +48,15 @@ xcode-select --install
 
 参考リンク: https://qiita.com/DaikiSuyama/items/5a2a96859b44595cba76
 
-* Homebrew のインストール
+### Homebrew のインストール
 
 https://brew.sh に書いてある下記コマンドを確認して、「ターミナル」にコピー＆貼り付け、実行
 
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-* tex (mactex)のインストール
+### tex (mactex)のインストール
 「ターミナル」で下記コマンドを順番に実行
+
 brew install --cask mactex
 
 export PATH
@@ -64,7 +65,7 @@ sudo tlmgr update --self -all
 
 参考リンク: https://blog.wtsnjp.com/2020/07/07/about-mactex/
 
-* pandoc と pandoc-crossref のインストール
+### pandoc と pandoc-crossref のインストール
 
 「ターミナル」で下記コマンドを実行
 
