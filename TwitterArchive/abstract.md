@@ -42,6 +42,19 @@ https://twitter.com/tmo_1031/status/1582515417972871168
 ◯Safariは注意
 https://twitter.com/tmo_1031/status/1582658496650412032
 
+## 4月4週のまとめ
+◯困った時の解決フロー(改訂版)
+https://twitter.com/tmo_1031/status/1649583235402457089
+
+◯時間管理の重要性
+https://twitter.com/tmo_1031/status/1649945895579049985
+
+●時間管理私のやり方
+https://twitter.com/tmo_1031/status/1649946287478026240
+
+◯歴史系科目のレポートを書く人へ
+https://twitter.com/tmo_1031/status/1650073513359978497
+
 ## 4月3週のまとめ
 ◇進捗4/15
 https://twitter.com/tmo_1031/status/1647210682222518272
