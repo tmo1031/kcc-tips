@@ -42,6 +42,19 @@ https://twitter.com/tmo_1031/status/1582515417972871168
 ◯Safariは注意
 https://twitter.com/tmo_1031/status/1582658496650412032
 
+## 5月1週のまとめ
+◯MS Office を大学ライセンスで使いたい人へ
+https://twitter.com/tmo_1031/status/1653153591019069440
+
+◯夏スク抽選結果(私の履歴)
+https://twitter.com/tmo_1031/status/1653960824493580288
+
+◯考察:夏スクⅡ期の倍率
+https://twitter.com/tmo_1031/status/1653386542294110209
+
+◯救いの手色々
+https://twitter.com/tmo_1031/status/1654644543231524865
+
 ## 4月4週のまとめ
 ◯困った時の解決フロー(改訂版)
 https://twitter.com/tmo_1031/status/1649583235402457089
