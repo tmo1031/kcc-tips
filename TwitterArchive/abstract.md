@@ -42,6 +42,22 @@ https://twitter.com/tmo_1031/status/1582515417972871168
 ◯Safariは注意
 https://twitter.com/tmo_1031/status/1582658496650412032
 
+## 5月2週のまとめ
+◯Eスク法哲学の学習法
+https://twitter.com/tmo_1031/status/1654674078907928577
+
+●学習に便利な小物達
+https://twitter.com/tmo_1031/status/1655016815620419585
+
+・学習方法のおすすめの仕方について
+https://twitter.com/tmo_1031/status/1655802988827656192
+
+◯レポ文字数についての考察
+https://twitter.com/tmo_1031/status/1657247479253852161
+
+◯〆切直前やることリスト
+https://twitter.com/tmo_1031/status/1657522296091975681
+
 ## 5月1週のまとめ
 ◯MS Office を大学ライセンスで使いたい人へ
 https://twitter.com/tmo_1031/status/1653153591019069440
