@@ -42,6 +42,16 @@ https://twitter.com/tmo_1031/status/1582515417972871168
 ◯Safariは注意
 https://twitter.com/tmo_1031/status/1582658496650412032
 
+## 5月4週のまとめ
+◯試験申込について
+https://twitter.com/tmo_1031/status/1661485290475880449
+
+◯次のレポ〆切について
+https://twitter.com/tmo_1031/status/1661491493247524865
+
+◯夏スク申込注意するリスト
+https://twitter.com/tmo_1031/status/1662082378662297602
+
 ## 5月2週のまとめ
 ◯Eスク法哲学の学習法
 https://twitter.com/tmo_1031/status/1654674078907928577
