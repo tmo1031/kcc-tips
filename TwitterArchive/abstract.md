@@ -42,6 +42,19 @@ https://twitter.com/tmo_1031/status/1582515417972871168
 ◯Safariは注意
 https://twitter.com/tmo_1031/status/1582658496650412032
 
+## 6月1週のまとめ(主に夏スク)
+◯持ち物(PC編)
+https://twitter.com/tmo_1031/status/1663372866946207744
+
+◯NL6月号
+https://twitter.com/tmo_1031/status/1664019252758839296
+
+◯文学部履修
+https://twitter.com/tmo_1031/status/1664042145618202624
+
+◯外国語
+https://twitter.com/tmo_1031/status/1664275017667076096
+
 ## 5月4週のまとめ
 ◯試験申込について
 https://twitter.com/tmo_1031/status/1661485290475880449
