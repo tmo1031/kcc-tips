@@ -42,6 +42,19 @@ https://twitter.com/tmo_1031/status/1582515417972871168
 ◯Safariは注意
 https://twitter.com/tmo_1031/status/1582658496650412032
 
+## 6月3週のまとめ
+◯Eスクの授業期間について
+https://twitter.com/tmo_1031/status/1664790189414436865
+
+◯秋のEスク地獄説
+https://twitter.com/tmo_1031/status/1666594959246626817
+
+◯科目試験に向けて
+https://twitter.com/tmo_1031/status/1669218484323229696
+
+◯科目試験不合格の影響
+https://twitter.com/tmo_1031/status/1669218944719388673
+
 ## 6月1週のまとめ(主に夏スク)
 ◯持ち物(PC編)
 https://twitter.com/tmo_1031/status/1663372866946207744
