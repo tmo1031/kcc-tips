@@ -42,6 +42,19 @@ https://twitter.com/tmo_1031/status/1582515417972871168
 ◯Safariは注意
 https://twitter.com/tmo_1031/status/1582658496650412032
 
+## 7月1週のまとめ
+◯夏スク諸手続〆切は7月3日
+https://twitter.com/tmo_1031/status/1673463743286738944
+
+◯夏スクのテキストの購入方法
+https://twitter.com/tmo_1031/status/1673466262209593346
+
+●Microsoft Lists が使えます
+https://twitter.com/tmo_1031/status/1674060311463096322
+
+◯NL7月号
+https://twitter.com/tmo_1031/status/1674900736965218305
+
 ## 6月3週のまとめ
 ◯Eスクの授業期間について
 https://twitter.com/tmo_1031/status/1664790189414436865
