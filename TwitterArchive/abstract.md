@@ -42,6 +42,10 @@ https://twitter.com/tmo_1031/status/1582515417972871168
 ◯Safariは注意
 https://twitter.com/tmo_1031/status/1582658496650412032
 
+## 7月2週のまとめ
+◯科目試験感想(試験内容を含まず)
+https://twitter.com/tmo_1031/status/1677909897021739010
+
 ## 7月1週のまとめ
 ◯夏スク諸手続〆切は7月3日
 https://twitter.com/tmo_1031/status/1673463743286738944
