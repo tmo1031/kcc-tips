@@ -42,6 +42,13 @@ https://twitter.com/tmo_1031/status/1582515417972871168
 ◯Safariは注意
 https://twitter.com/tmo_1031/status/1582658496650412032
 
+## 7月3週のまとめ
+◯科目試験振り返り(文学部専門科目)
+https://twitter.com/tmo_1031/status/1678903035580534786
+
+◯Eスクは10単位までしか卒業要件に算入されません
+https://twitter.com/tmo_1031/status/1679265009392836608
+
 ## 7月2週のまとめ
 ◯科目試験感想(試験内容を含まず)
 https://twitter.com/tmo_1031/status/1677909897021739010
