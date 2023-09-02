@@ -42,6 +42,24 @@ https://twitter.com/tmo_1031/status/1582515417972871168
 ◯Safariは注意
 https://twitter.com/tmo_1031/status/1582658496650412032
 
+## 9月1週のまとめ
+◇23年度7月科目試験結果
+https://twitter.com/tmo_1031/status/1694829626525163617
+
+◯〆切直前やることリスト
+https://twitter.com/tmo_1031/status/1696307543134658611
+
+◯9月はチャンス
+https://twitter.com/tmo_1031/status/1697027245754531917?
+
+◯科目試験申込はレポ〆切直後がお勧め
+https://twitter.com/tmo_1031/status/1697054593358967039?
+
+◇漢文学2レポ実績
+https://twitter.com/tmo_1031/status/1697054802285678858
+
+◯NL9月号抜粋
+https://twitter.com/tmo_1031/status/1697375834393452659
 ## 7月3週のまとめ
 ◯科目試験振り返り(文学部専門科目)
 https://twitter.com/tmo_1031/status/1678903035580534786
