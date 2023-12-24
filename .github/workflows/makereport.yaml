@@ -1,0 +1,54 @@
+name: makereport
+on: 
+  push:
+    paths:
+      - 'Documents/**.txt'
+      - 'Documents/**.md'
+jobs:
+  find-files:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.matrix.outputs.value }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: List changed files
+        id: matrix
+        run: |
+          changed_files=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
+          changed_files=$(echo $changed_files | tr '\n' ',' | tr ' ' ',' | sed 's/,/","/g' | sed 's/,"$//')
+          changed_files='["'"$changed_files"']'
+          echo "$changed_files"
+          echo -E "value=$changed_files" >> "$GITHUB_OUTPUT"
+        shell: bash
+  build-pdf:
+    needs: find-files
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 1
+      matrix:
+        value: ${{ fromJson(needs.find-files.outputs.matrix) }}
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v3
+      - name: Pull Docker Image
+        run: docker pull ghcr.io/tmo1031/pandoc:latest
+      - name: Set Arg
+        run: |
+          file_name=${{ matrix.value }}
+          dockerfile=$(echo "$file_name" | sed 's|^|/data/|')
+          echo "Arguments is $file_name"
+          echo "Docker_File=$dockerfile" >> $GITHUB_ENV
+      - name: Markdown to pdf
+        run: docker run --rm --entrypoint="sh" --volume "$(pwd):/data" ghcr.io/tmo1031/pandoc -c "chmod +x /data/bin/makereport.sh && /data/bin/makereport.sh ${{ env.Docker_File }} all"
+      - name: Commit and Push Changes
+        run: |
+          git config user.email "action@github.com"
+          git config user.name "actions-user"
+          git add .
+          git fetch
+          git merge
+          git commit -m "Update files from build"
+          git push

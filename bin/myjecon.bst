@@ -47,9 +47,9 @@ FUNCTION {jecon.debug}
 
 % Style Option 指定 MLA/APA/Chicago
 FUNCTION {bst.style.option}
-% { #0 }	  % MLA 9th
+{ #0 }	  % MLA 9th
 % { #1 }    % APA 7th
-{ #2 }    % Chicago 17th Author-Date
+% { #2 }    % Chicago 17th Author-Date
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%	用語
@@ -172,7 +172,7 @@ FUNCTION {bst.first.name.initial}
       if$
     }
   if$
-}  % modified by tmo1031
+}  % modified by tmarumo
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -318,7 +318,7 @@ FUNCTION {bst.year.position}
 % { #1 }    % 最後（note の前）
 % { #2 }    % journal name の後（article entryのみ）
 % { #3 }    % volume の後（article entryのみ）
-% { #4 }    % page の前（article entryのみ）% modified by tmo1031
+% { #4 }    % page の前（article entryのみ）% modified by tmarumo
 { bst.style.option #0 =  % MLA
     { #4 }
     { bst.style.option #2 = % Chicago 17th Author-Date
@@ -327,7 +327,7 @@ FUNCTION {bst.year.position}
       if$
     }
   if$
-}  % modified by tmo1031
+}  % modified by tmarumo
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -525,25 +525,25 @@ FUNCTION {bst.sei.mei.two.jp}
 %
 FUNCTION {bst.year.pre}
 %{ " (" }    % (default)
-{ " " } % modified by tmo1031
+{ " " } % modified by tmarumo
 
 % year の後に付ける文字列 (英語文献用)
 %
 FUNCTION {bst.year.post}
 %{ ") " }    % (default)
-{ "" } % modified by tmo1031
+{ "" } % modified by tmarumo
 
 % year の前に付ける文字列 (日本語文献用)
 %
 FUNCTION {bst.year.pre.jp}
 %{ " (" }    % (default)
-{ " " } % modified by tmo1031
+{ " " } % modified by tmarumo
 
 % year の後に付ける文字列 (日本語文献用)
 %
 FUNCTION {bst.year.post.jp}
 %{ ") " }    % (default)
-{ "" } % modified by tmo1031
+{ "" } % modified by tmarumo
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %	title (book 以外)
@@ -698,7 +698,7 @@ FUNCTION {bst.edition.post}
 %
 FUNCTION {bst.edition.pre.jp}
 %{ "，第" }    % (default)
-{ "，" }    % modified by tmo1031
+{ "，" }    % modified by tmarumo
 
 % edition の前に付ける文字列 (日本語文献用)
 %
@@ -758,7 +758,7 @@ FUNCTION {bst.number.post.jp}
 %
 FUNCTION {bst.in}
 %{ " in " }    % (default)
-{ "" }    % modified by tmo1031
+{ "" }    % modified by tmarumo
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %	page
@@ -774,7 +774,7 @@ FUNCTION {bst.pages.pre}
       if$
     }
   if$
-}  % modified by tmo1031
+}  % modified by tmarumo
 
 % page の前に付ける文字列 (英語文献用)
 %
@@ -787,7 +787,7 @@ FUNCTION {bst.page.pre}
       if$
     }
   if$
-}  % modified by tmo1031
+}  % modified by tmarumo
 
 % page の後に付ける文字列 (複数ページ) (英語文献用)
 %
@@ -894,7 +894,7 @@ if$
 FUNCTION {bst.publisher.post}
 %{ "" }	  % (default)
 {bst.year.position #4 =
-{ ", " }	  % modified by tmo1031
+{ ", " }	  % modified by tmarumo
 { "" }
 if$
 }
@@ -909,7 +909,7 @@ FUNCTION {bst.publisher.pre.jp}
 FUNCTION {bst.publisher.post.jp}
 %{ "" }	  % (default)
 {bst.year.position #4 =
-{ ", " }	  % modified by tmo1031
+{ ", " }	  % modified by tmarumo
 { "" }
 if$
 }
@@ -3588,7 +3588,7 @@ FUNCTION {book}
 
   format.translator output.nocomma
 
-  format.edition output.nocomma % moved by tmo1031
+  format.edition output.nocomma % moved by tmarumo
 
   format.bvolume output.nocomma
   format.number.series output.nocomma
@@ -3669,7 +3669,7 @@ FUNCTION {incollection}
 
   format.in.ed.booktitle "booktitle" output.check.nocomma
 
-  format.edition output.nocomma % moved by tmo1031
+  format.edition output.nocomma % moved by tmarumo
 
   format.bvolume output.nocomma
   format.chapter.pages output.nocomma

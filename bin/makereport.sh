@@ -1,19 +1,23 @@
-#!/bin/bash
-mdfilename=$1
-outputext=$2  #Option: docx/tex/pdf/all/clear
-bindir="$(cd $(dirname $0); pwd)/"
+#!/bin/sh
+workdir=$(dirname "$1")
+mdfilename=$(basename "$1")
+outputext=$2  #docx/tex/pdf/all
+rootdir="/data/"
+bindir="${rootdir}bin/"
 yamlfilename="MyDefaults.yaml"
-wordtemplatefile="MyReference.docx"
-latextemplatefile="default.latex"
-crossrefconffile="crossref_config.yaml"
+
+cd $workdir
 
 if [ ${mdfilename#*.} = "md" ] || [ ${mdfilename#*.} = "txt" ] ; then
   filename=${mdfilename%.*}
+  if [ -e ${filename}.bib.txt ]; then
+    cp -f ${filename}.bib.txt ${filename}.bib
+  fi
   if [ $outputext = "docx" ] || [ $outputext = "all" ] ; then
-    pandoc -d "${bindir}${yamlfilename}" --reference-doc="${bindir}${wordtemplatefile}" $mdfilename -o "${filename}.docx"
+    pandoc -d $bindir$yamlfilename $mdfilename -o "${filename}.docx"
   fi
   if [ $outputext = "tex" ] || [ $outputext = "pdf" ] || [ $outputext = "all" ] ; then
-    pandoc -s --filter pandoc-crossref -M "crossrefYaml=${bindir}${crossrefconffile}" -d "${bindir}${yamlfilename}" --template="${bindir}${latextemplatefile}" $mdfilename -o "${filename}.tex"
+    pandoc -s --filter pandoc-crossref -d ${bindir}${yamlfilename} $mdfilename -o "${filename}.tex"
   fi
   if [ $outputext = "pdf" ] || [ $outputext = "all" ] ; then
     uplatex "${filename}.tex"

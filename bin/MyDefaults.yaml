@@ -1,5 +1,7 @@
 from: markdown-auto_identifiers
-resource-path: ['./']
+resource-path: ['/data/bin/']
+reference-doc: /data//bin/defalut.docx
+template: /data//bin/default.latex
 number-sections: true
 citeproc: true
 cite-method: natbib
