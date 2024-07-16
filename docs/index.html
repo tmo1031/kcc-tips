@@ -1,13 +1,65 @@
 <!DOCTYPE html>
-<html>
-  <head>
+<html lang="ja">
+<head>
     <meta charset="UTF-8">
-    <title>kcc-tips</title>
-  </head>
-
-  <body>
-    <main>
-      <h1>Sample Page</h1>
-   </main>
-  </body>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KCC Tips</title>
+    <style>
+        body {
+            display: flex;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .sidebar {
+            width: 20%;
+            background-color: gold;
+            padding: 10px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        }
+        .content {
+            width: 80%;
+            padding: 20px;
+        }
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .sidebar ul li {
+            margin: 10px 0;
+        }
+        .sidebar ul li a {
+            text-decoration: none;
+            color: #333;
+            padding: 5px 10px;
+            display: block;
+            border-radius: 5px;
+        }
+        .sidebar ul li a:hover {
+            background-color: #ddd;
+        }
+    </style>
+    <script>
+        function loadContent(section) {
+            fetch(section)
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('content').innerHTML = data;
+                });
+        }
+    </script>
+</head>
+<body>
+    <div class="sidebar">
+        <h1>KCC Tips</h1>
+        <ul>
+            <li><a href="javascript:void(0)" onclick="loadContent('schedule.html')">スケジュール</a></li>
+            <li><a href="javascript:void(0)" onclick="loadContent('checksheet.html')">卒業要件チェックシート</a></li>
+            <li><a href="javascript:void(0)" onclick="loadContent('map.html')">科目系統図</a></li>
+        </ul>
+    </div>
+    <div class="content" id="content">
+        <p>慶應通信学生向けのお役立ち情報/ツールを実験的に公開しています。</p>
+        <p>みなさんの学業の手助けになれば幸いです。</p>
+    </div>
+</body>
 </html>

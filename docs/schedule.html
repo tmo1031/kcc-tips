@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>慶應通信スケジュール</title>
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ startOnLoad: true });
+    </script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .mermaid {
+            background-color: White;
+            padding: 20px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="mermaid">
+        gantt
+        title 慶應通信スケジュール(2024年)
+        dateFormat YY-MM-DD
+        axisFormat  %m/%d
+
+        section テキスト科目
+        通常レポ1: 23-11-23, 24-02-28
+        科目試験1: 24-04-06, 24-04-07
+        通常レポ2: 24-02-29, 24-05-22
+        科目試験2: 24-07-06, 24-07-07
+        通常レポ3: 24-05-23, 24-08-28
+        科目試験3: 24-10-05, 24-10-06
+        通常レポ4: 24-08-29, 24-11-20
+        科目試験4: 25-01-11, 25-01-12
+        通常レポ1: 24-11-21, 25-02-28
+
+        section スクーリング
+        春Eスク: 24-04-16, 24-07-07
+        夏スク: 24-08-05, 24-08-24
+        週末スク: 24-10-12, 24-10-27
+        夜間スク: 24-10-01, 24-12-27
+        秋Eスク: 24-10-22, 25-01-12
+
+        section 卒論
+        指導申込春: 24-01-17, 24-02-09
+        指導日春: 24-05-01, 24-05-31
+        指導申込秋: 24-07-11, 24-08-02
+        指導日秋: 24-10-01, 24-10-31
+        指導申込春: 25-01-17, 25-02-07
+    </div>
+</body>
+</html>
