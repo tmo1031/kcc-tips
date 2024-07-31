@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <style>
@@ -133,7 +134,7 @@
 
     /*タブのスタイル*/
     .tab_item {
-      width: calc(100%/3);
+      width: calc(100%/5);
       height: 50px;
       border-bottom: 3px solid #5ab4bd;
       background-color: #d9d9d9;
@@ -167,6 +168,8 @@
 
 
     /*選択されているタブのコンテンツのみを表示*/
+    #plan:checked~#plan_content,
+    #actual:checked~#actual_content,
     #input:checked~#input_content,
     #output:checked~#output_content,
     #interface:checked~#interface_content {
@@ -184,6 +187,24 @@
       width: 300px;
       border: 1px solid #999;
     }
+    /* ラベル列の幅を固定 */
+    .term-column {
+    width: 130px;
+    text-align: left; /* テキストを左揃えに設定 */
+    }
+    .subject-column {
+    width: auto;
+    }
+    .hidden {
+      display: none;
+    }
+    .radio-group {
+      width: 160px;
+      display: flex;
+    }
+    .unit-input {
+      width: 30px;
+    }
   </style>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -193,19 +214,115 @@
 <body>
   <a href="index.html">Top に戻る</a>
   <div class="tabs">
-    <input id="input" type="radio" name="tab_item" checked>
+    <input id="plan" type="radio" name="tab_item" checked>
+    <label class="tab_item" for="plan">計画</label>
+    <input id="actual" type="radio" name="tab_item">
+    <label class="tab_item" for="actual">実績</label>
+    <input id="input" type="radio" name="tab_item">
     <label class="tab_item" for="input">取得単位</label>
     <input id="output" type="radio" name="tab_item">
     <label class="tab_item" for="output">卒業要件</label>
     <input id="interface" type="radio" name="tab_item">
     <label class="tab_item" for="interface">入出力</label>
+    <div class="tab_content" id="plan_content">
+      <div class="tab_content_description">
+        <div class="plan">
+          <label class="Profile">学籍情報</label>
+          <div class="input-profile">
+            <form method="get" action="">
+              <input id="year_1" type="number" size="8" name="year" value="2024" min="2000" max="2100" step="1">
+              <select id="month_1" name="">
+                <option value="">入学月
+                <option value=4>4月入学
+                <option value=10>10月入学
+              </select>
+              <BR>
+              <select id="department_1" name="department">
+                <option value="">学部
+                <option>文学部</option>
+                <option>経済学部</option>
+                <option>法学部</option>
+              </select>
+              <select id="section_1" name="section"></select>
+              <BR>
+              <select id="course_1" name="course">
+                <option value="">入学課程
+                <option>普通課程</option>
+                <option>特別課程</option>
+                <option>学士入学</option>
+              </select>
+              <select id="language_1" name="language">
+                <option value="">外語
+                <option>英語</option>
+                <option>ドイツ語</option>
+                <option>フランス語</option>
+              </select>
+              <BR>
+              <label>認定単位:</label>
+              <label><input id="apply_stat_1" type="checkbox">統計</label>
+              <label><input id="apply_fl1_1" type="checkbox">外語</label>
+              <BR>
+              <label><input id='years' type='number' size="1" value='0' min="0" max="20">年</label>
+              <input id='months' type='number' size="1" value='0' min="0" max="6" step="6">ヶ月で卒業予定</label>
+            </form>
+          </div>
+          <div id="dropdownsContainer"></div>
+          <table id="dropdownTable">
+            <thead>
+                <tr>
+                    <th class="term-column">受講時期</th>
+                    <th class="subject-column">A群</th>
+                    <th class="subject-column">B群</th>
+                    <th class="subject-column">C群</th>
+                    <th class="subject-column">D群</th>
+                    <th class="subject-column">E群</th>
+                    <th class="subject-column">F群</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="tab_content" id="actual_content">
+      <div class="tab_content_description">
+        <div class="actual">
+          <table id="selectedValuesTable">
+            <thead>
+              <tr>
+                <th>受講時期</th>
+                <th>科目名</th>
+                <th>評価</th>
+                <th>レポ</th>
+                <th>単位数</th>
+                <th>区分</th>
+                <th>形態</th>
+              </tr>
+            </thead>
+            <tbody id="selectedValuesBody">
+            </tbody>
+            <tfoot>
+              <tr>
+                <td>合計単位数</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td id="totalUnit">0</td>
+                <td></td>
+                <td></td>
+              </tr>
+            </tfoot>
+          </table>          
+        </div>
+      </div>
+    </div> 
     <div class="tab_content" id="input_content">
       <div class="tab_content_description">
         <div class="input">
           <label class="Profile">学籍情報</label>
           <div class="input-profile">
             <form method="get" action="">
-              <input type="text" size="8" name="year" value="入学年度">
+              <input id="year" type="number" size="8" name="year" value="2024" min="2000" max="2100" step="1">
               <select id="month" name="">
                 <option value="">入学月
                 <option value=4>4月入学
@@ -561,10 +678,9 @@
   <p>※1:必修外国語の組み合わせを判定しません</p>
   <p>※2:重複履修等で無効になる単位数を判定しません</p>
   <p>※3:特別課程で認定単位がある場合に保健体育などで上限を超過する単位数を判定しません</p>
-  <script src="header.js"></script>
   <script src="io.js"></script>
   <script src="update.js"></script>
-  <script src="chart.js"></script>
+  <script src="subjects.js"></script>
 </body>
 
 </html>
