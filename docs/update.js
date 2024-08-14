@@ -380,7 +380,7 @@ function setChartData () {
     chartData.units.requiredDone,chartData.units.elective1Done,chartData.units.elective2Done,chartData.units.thesisDone);
   chartData.units.totalDown = sum(
     chartData.units.apply,chartData.units.artsTDone,chartData.units.fl1TDone,chartData.units.liberalTDone,chartData.units.specialTDone,
-    chartData.units.liberalSDone,chartData.units.specialSDone,chartData.units.thesisDone);
+    chartData.units.artsSDone,chartData.units.fl1SDone,chartData.units.liberalSDone,chartData.units.specialSDone,chartData.units.thesisDone);
   chartData.units.freeNone = max(0, decisions.total.graduate - sum(chartData.units.totalDown,chartData.units.artsTNone,chartData.units.specialTNone,chartData.units.textNone,chartData.units.schoolNone,chartData.units.thesisNone));
 }
 
