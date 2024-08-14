@@ -35,6 +35,18 @@ document.addEventListener("DOMContentLoaded", function() {
   refresh('byCourse');      
 });
 
+function whiteOut() {
+  const stringToCheck = '--';
+  const tableBody = document.querySelector('#PlanningTable tbody');
+  const selectElements = tableBody.querySelectorAll('select');
+  selectElements.forEach(select => {
+    const selectedValue = select.value;
+    if (selectedValue.includes(stringToCheck)) {
+      select.value = ' ';
+    }
+  });
+}
+
 function writePlanningTable() {
   function getVisibleRows() {
     const rows = document.querySelectorAll('#ActualBody tr'); // #ActualBody 内のすべての tr 要素を取得
@@ -192,6 +204,7 @@ function readPlanningTable() {
     console.log(entry.name, entry.grade, entry.reportResult,entry.unitCount,entry.category,entry.form);
     inputGrade(i, j, entry.name, entry.grade, entry.reportResult,entry.unitCount,entry.category,entry.form);
   });
+  refresh('byActual');
 };
 
 function writeUnitTable() {
@@ -801,7 +814,7 @@ function refresh(mode) {
   
     const ActualBody = document.getElementById('ActualBody');
     ActualBody.innerHTML = '';
-    const filterCriteria = ['--'];
+    const filterCriteria = ['--',' '];
     let totalUnit = 0;
   
     for (let i = 0; i < PlanningRows; i++) {

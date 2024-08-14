@@ -502,6 +502,7 @@ const optionsData = {
     { value: 'アメリカ政治', category: ['J','L','E'], subcategory: '2類', form: 'S', level: 3, unit: 2, schedule: [[2023,'A','F'],[2024,'B','A']]},
   ],
   other: [
-    { value: 'その他', group: '', category: [''], subcategory: 'any', form: 'any', level: 0, unit: 0, start: 2000, end: 2100}
+    { value: 'その他', group: '', category: [''], subcategory: 'any', form: 'any', level: 0, unit: 0, start: 2000, end: 2100},
+    { value: ' ', group: '', category: [''], subcategory: 'none', form: 'none', level: 0, unit: 0, start: 2000, end: 2100}
   ],
 };
