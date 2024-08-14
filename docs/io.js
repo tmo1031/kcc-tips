@@ -718,6 +718,7 @@ function refresh(mode) {
         const y = parsedYear + adj;
         
         labelCell.id = `label-${i}`;
+        labelCell.classList.add('label-cell');
         row.appendChild(labelCell);
     
         for (let j = 0; j < groups; j++) {        
