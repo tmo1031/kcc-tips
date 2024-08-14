@@ -160,10 +160,27 @@
     }
   
     .radio-group {
-      width: 160px;
       display: flex;
+      flex-wrap: wrap; /* アイテムをラップさせる */
     }
-  
+
+    .radio-group label {
+      margin-right: 10px; /* 横並びのときのスペース */
+    }
+
+    /* 画面幅が狭いときのスタイル */
+    @media (max-width: 600px) {
+      .radio-group {
+        flex-direction: column; /* 縦に並べる */
+        align-items: flex-start; /* 左寄せ */
+      }
+
+      .radio-group label {
+        margin-right: 0; /* 縦並びのときのスペースを削除 */
+        margin-bottom: 10px; /* 縦並びのときのスペース */
+      }
+    }
+    
     .unit-input {
       width: 30px;
     }
