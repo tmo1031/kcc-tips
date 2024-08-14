@@ -1,561 +1,453 @@
-var apply_total = 0;
-var arts1_total = 0;
-var arts2_total = 0;
-var arts3_total = 0;
-var arts1_SubjN = 0;
-var arts2_SubjN = 0;
-var arts3_SubjN = 0;
-var stat_total = 0;
-var fl1_total = 0;
-var fl2_total = 0;
-var sports_total = 0;
-var required_total = 0;
-var elective1_total = 0;
-var elective2_total = 0;
-var special_total = 0;
-var thesis_total = 0;
-var arts_total = apply_total + arts1_total + arts2_total + arts3_total;
-var arts_text = 0;
-var libarts_text = 0;
-var special_text = 0;
-var text_total = libarts_text + special_text;
-var libarts_media = 0;
-var special_media = 0;
-var media_total = Math.min(10, libarts_media + special_media);
-var media_exe = Math.max(0, libarts_media + special_media - 10);
-var libarts_school = 0;
-var special_school = 0;
-var school_total = media_total + libarts_school + special_school;
-var total = arts_total + fl1_total + fl2_total + sports_total + required_total + elective1_total + elective2_total + thesis_total - media_exe;
-var arts = 6; //3分野科目の各分野 p.29
-var artsSubN = 2; //3分野科目の各分野 p.29
-var stat = 0; //経済学部の統計学(A) p.31
-var required = 0; //各学部の必修科目 p.38,p.39,p.42,p.43
-var elective = 0; //法学部の選択必修科目 p.42,p.43
-var schooling = 0; //スクーリング p.20
-var arts3sum = 32;
-var arts3text = 24;
-var fl1 = 8;
-var otherarts = 8;
-var libarts = 48;
-var special = 68;
-var thesis = 8;
-var spetext = 40;
-var textsum = 70;
-var stat_text = 0;
-var fl1_text = 0;
-var fl2_text = 0;
-var sports_text = 0;
-var fl1_school = 0;
-var arts_school = 0;
+google.charts.load('current', { packages: ['corechart'] });// Google Charts APIの読み込み
+// ヘルパー関数
+const min = (a, b) => Math.min(a, b);
+const max = (a, b) => Math.max(a, b);
+function sum(...numbers) {
+  return numbers.reduce((acc, num) => acc + num, 0);
+}
 
-window.changeValue = function () {
-  if (document.getElementById('apply_stat').checked) { $('#stat-text').val(4); }
-  if (document.getElementById('apply_fl1').checked) { $('#fl1-text').val(8); }
+const decisions = {
+  arts:       { major: '総', minor: '3分',  id: 1, total: 0, text: 0, school: 0, media: 0,  graduate: 32, entry: 28, prog: 0 },
+  arts1:      { major: '総', minor: '人文', id: 2, total: 0, text: 0, school: 0, media: 0,  graduate: 6, prog: 0, subjNum: 0, subjNumReq: 2 },
+  arts2:      { major: '総', minor: '社会', id: 3, total: 0, text: 0, school: 0, media: 0,  graduate: 6, prog: 0, subjNum: 0, subjNumReq: 2 },
+  arts3:      { major: '総', minor: '科学', id: 4, total: 0, text: 0, school: 0, media: 0,  graduate: 6, prog: 0, subjNum: 0, subjNumReq: 2 },
+  statT:      { major: '総', minor: '統計T',id: 5, total: 0,                                graduate: 0, prog: 0 },
+  artsT:      { major: '総', minor: '3分T', id: 6, total: 0,                                graduate: 24, entry: 18, prog: 0 },
+  fl1:        { major: '総', minor: '外語', id: 7, total: 0, text: 0, school: 0, media: 0,  graduate: 8, entry: 6, prog: 0 },
+  liberal:    { major: '総', minor: '計',   id: 8, total: 0, text: 0, school: 0, media: 0,  graduate: 48, entry: 36, approve: 48, submit: 48, prog: 0 },
+  required:   { major: '専', minor: '必修', id: 9, total: 0, text: 0, school: 0, media: 0,  graduate: 0, approve: 10, prog: 0 },
+  elective1:  { major: '専', minor: '選必', id: 10, total: 0, text: 0, school: 0, media: 0, graduate: 0, prog: 0 },
+  specialT:   { major: '専', minor: '通信', id: 11, total: 0,                               graduate: 40, prog: 0 },
+  special:    { major: '専', minor: '計',   id: 12, total: 0, text: 0, school: 0, media: 0, graduate: 68, entry: 7, approve: 35, submit: 60, prog: 0 },
+  text:       { major: '計', minor: '通信', id: 13, total: 0,                               graduate: 70, prog: 0 },
+  school:     { major: '計', minor: 'スク', id: 14, total: 0,                               graduate: 30, submit: 15, prog: 0 },
+  thesis:     { major: '論', minor: '卒論', id: 15, total: 0, text: 0, school: 0, media: 0, graduate: 8, prog: 0 },
+  otherArts:  { major: '総', minor: '他',   id: 16, total: 0, text: 0, school: 0, media: 0 },
+  fl2:        { major: '総', minor: '他語', id: 17, total: 0, text: 0, school: 0, media: 0 },
+  sports:     { major: '総', minor: '保体', id: 18, total: 0, text: 0, school: 0, media: 0 },
+  elective2:  { major: '専', minor: '選択', id: 19, total: 0, text: 0, school: 0, media: 0 },
+  total:      { major: '計', minor: '計',   id: 20, total: 0, text: 0, school: 0, media: 0, graduate: 124, prog: 0 },
+  apply:      { major: '総', minor: '認定', id: 21, total: 0, text: 0 },
+  free:       { major: '計', minor: '任意', id: 22, total: 0, text: 0, school: 0, media: 0, graduate: 16, prog: 0 },
+};
 
-  switch ($('#department option:selected').val()) { //N6/S4/B0
-    case '文学部':
-      stat = 0;
-      required = 28;
-      elective = 0;
-      deptLabel = '文';
-      sectLabel = $('#section option:selected').val().charAt(1);
-      break;
-    case '経済学部':
-      stat = 4;
-      required = 17;
-      elective = 0;
-      deptLabel = '経';
-      sectLabel = '';
-      break;
-    case '法学部':
-      stat = 0;
-      required = 10;
-      elective = 20;
-      deptLabel = '法';
-      sectLabel = $('#section option:selected').val().charAt(0);
-      break;
-    default:
-      stat = 0;
-      required = 0;
-      elective = 0;
-      deptLabel = '-';
-      break;
+const allUnits = [
+  'apply', 'arts1Done', 'arts2Done', 'arts3Done', 'fl1Done', 'liberalDone', 'requiredDone', 'elective1Done', 'elective2Done', 'thesisDone',
+  'artsTDone', 'fl1TDone', 'liberalTDone', 'specialTDone', 'artsSDone', 'fl1SDone', 'liberalSDone', 'specialSDone',
+  'arts1None', 'arts2None', 'arts3None', 'artsNone', 'fl1None', 'liberalNone', 'requiredNone', 'elective1None', 'elective2None', 'thesisNone', 
+  'artsTNone', 'specialTNone', 'textNone', 'schoolNone', 'freeNone','totalUp','totalDown',
+];
+const chartUnits = Object.fromEntries(allUnits.map(unit => [unit, 0]));
+
+const chartData = {
+  units: chartUnits,
+  dataUpOuter: {
+    'apply':          { label: '認定', color: 'gray' },
+    'arts1Done':      { label: '人文済', color: 'red' },
+    'arts2Done':      { label: '社会済', color: 'red' },
+    'arts3Done':      { label: '自然済', color: 'red' },
+    'fl1Done':        { label: '必修語済', color: 'red' },
+    'liberalDone':    { label: '総合済', color: 'red' },
+    'arts1None':      { label: '人文未', color: 'lightsalmon' },
+    'arts2None':      { label: '社会未', color: 'lightsalmon' },
+    'arts3None':      { label: '自然未', color: 'lightsalmon' },
+    'artsNone':       { label: '3分野未', color: 'lightsalmon' },
+    'fl1None':        { label: '必修語未', color: 'lightsalmon' },
+    'liberalNone':    { label: '総合未', color: 'lightsalmon' },
+    'requiredDone':   { label: '必修済', color: 'navy' },
+    'elective1Done':  { label: '選択必済', color: 'navy' },
+    'elective2Done':  { label: '選択済', color: 'navy' },
+    'requiredNone':   { label: '必修未', color: 'lightsteelblue' },
+    'elective1None':  { label: '選択必未', color: 'lightsteelblue' },
+    'elective2None':    { label: '選択未', color: 'lightsteelblue' },
+    'thesisDone':     { label: '卒論済', color: 'fuchsia' },
+    'thesisNone':     { label: '卒論未', color: 'pink' },
+  },
+  dataUpMiddle: {
+    'artsDone':       { label: '3分野済', color: 'red' , calc: ['apply', 'arts1Done', 'arts2Done', 'arts3Done']},
+    'fl1Done':        { label: '必修語済', color: 'red' },
+    'liberalDone':    { label: '総合済', color: 'red' },
+    'artsNone':       { label: '3分野未', color: 'lightsalmon' , calc: ['arts1None', 'arts2None', 'arts3None', 'artsNone']},
+    'fl1None':        { label: '必修語未', color: 'lightsalmon' },
+    'liberalNone':    { label: '総合未', color: 'lightsalmon' },
+    'requiredDone':   { label: '必修済', color: 'navy' },
+    'elective1Done':  { label: '選択必済', color: 'navy' },
+    'elective2Done':  { label: '選択済', color: 'navy' },
+    'requiredNone':   { label: '必修未', color: 'lightsteelblue' },
+    'elective1None':  { label: '選択必未', color: 'lightsteelblue' },
+    'elective2None':  { label: '選択未', color: 'lightsteelblue' },
+    'thesisDone':     { label: '卒論済', color: 'fuchsia' },
+    'thesisNone':     { label: '卒論未', color: 'pink' },
+  },
+  dataUpInner: {
+    'liberalDone':    { label: '総合済', color: 'red', calc: ['apply', 'arts1Done', 'arts2Done', 'arts3Done', 'fl1Done', 'liberalDone']},
+    'liberalNone':    { label: '総合未', color: 'lightsalmon', calc: ['arts1None', 'arts2None', 'arts3None', 'artsNone', 'fl1None', 'liberalNone']},
+    'specialDone':    { label: '専門済', color: 'navy', calc: ['requiredDone', 'elective1Done', 'elective2Done']},
+    'specialNone':    { label: '専門未', color: 'lightsteelblue', calc: ['requiredNone', 'elective1None', 'elective2None']},
+    'thesisDone':     { label: '卒論済', color: 'fuchsia' },
+    'thesisNone':     { label: '卒論未', color: 'pink' },
+  },
+  dataDownOuter: {
+    'apply':            { label: '認定', color: 'gray' },
+    'artsTDone':        { label: '3分T済', color: 'red' },
+    'fl1TDone':         { label: '必語T済', color: 'red' },
+    'liberalTDone':     { label: '他総T済', color: 'red' },
+    'specialTDone':     { label: '専テキ済', color: 'navy' },
+    'artsTNone':        { label: '3分T未', color: 'lightsalmon' },
+    'specialTNone':     { label: '専テキ未', color: 'lightsteelblue' },
+    'textNone':         { label: 'テキ未', color: 'powderblue' },
+    'artsSDone':        { label: '3分スク済', color: 'red' },
+    'fl1SDone':         { label: '必語スク済', color: 'red' },
+    'liberalSDone':     { label: '他総スク済', color: 'red' },
+    'specialSDone':     { label: '専スク済', color: 'navy' },
+    'schoolNone':       { label: 'スク未', color: 'wheat' },
+    'freeNone':         { label: '任意未', color: 'white' },
+    'thesisDone':       { label: '卒論済', color: 'fuchsia' },
+    'thesisNone':       { label: '卒論未', color: 'pink' },
+  },
+  dataDownMiddle: {
+    'textDone':         { label: 'テキ済', color: 'aqua', calc: ['apply', 'artsTDone', 'fl1TDone', 'liberalTDone', 'specialTDone'] },
+    'textNone':         { label: 'テキ未', color: 'powderblue', calc: ['artsTNone', 'specialTNone', 'textNone'] },
+    'schoolDone':       { label: 'スク済', color: 'gold', calc: ['artsSDone', 'fl1SDone', 'liberalSDone', 'specialSDone'] },
+    'schoolNone':       { label: 'スク未', color: 'wheat' },
+    'freeNone':         { label: '任意未', color: 'white' },
+    'thesisDone':       { label: '卒論済', color: 'fuchsia' },
+    'thesisNone':       { label: '卒論未', color: 'pink' },
   }
+};
 
-  switch ($('#course option:selected').val()) { //N6/S4/B0
-    case '普通課程':
-      arts = 6;
-      artsSubN = 2;
-      schooling = 30;
-      apply_total = grades[0][0] = 0;
-      courseLabel = '普';
-      break;
-    case '特別課程':
-      arts = 4;
-      artsSubN = 1;
-      schooling = 22;
-      apply_total = grades[0][0] = 18;
-      courseLabel = '特';
-      break;
-    case '学士入学':
-      arts = 0;
-      artsSubN = 0;
-      schooling = 15;
-      if ($('#department option:selected').val() == '経済学部' && !(document.getElementById('apply_stat').checked)) {
-        apply_total = grades[0][0] = 36;
-      } else {
-        apply_total = grades[0][0] = 40;
-      }
-      courseLabel = '学';
-      break;
-    default:
-      arts = 6;
-      artsSubN = 2;
-      schooling = 30;
-      courseLabel = '-';
-      break;
-  }
+window.showCharts = function () {
+  const departmentConfig = {
+    '文学部': { stat: 0, required: 28, elective: 0},
+    '経済学部': { stat: 4, required: 17, elective: 0},
+    '法学部': { stat: 0, required: 10, elective: 20}
+  };
+  
+  const selectedDept = $('#department option:selected').val();
+  const deptConfig = departmentConfig[selectedDept] || { stat: 0, required: 0, elective: 0};
 
-  getForm();
+  const deptUpdates = {
+    statT: { graduate: deptConfig.stat },
+    required: { graduate: deptConfig.required },
+    elective1: { graduate: deptConfig.elective }
+  };
+  
+  Object.keys(deptUpdates).forEach(condition => {
+    Object.assign(decisions[condition], deptUpdates[condition]);
+  });
+    
+  const courseConfig = {
+    '普通課程': { arts: 6, artsSubN: 2, school: 30, applyText: 0},
+    '特別課程': { arts: 4, artsSubN: 1, school: 22, applyText: 18},
+    '学士入学': { 
+      arts: 0, artsSubN: 0, school: 15,
+      applyText: ($('#department option:selected').val() === '経済学部' && !document.getElementById('apply_stat').checked) ? 36 : 40
+    }
+  };
+
+  const selectedCourse = $('#course option:selected').val();
+  const crsConfig = courseConfig[selectedCourse] || { arts: 6, artsSubN: 2, school: 30, applyText: 0};
+
+  const courseUpdates = {
+    arts1: { graduate: crsConfig.arts, subjNumReq: crsConfig.artsSubN},
+    arts2: { graduate: crsConfig.arts, subjNumReq: crsConfig.artsSubN},
+    arts3: { graduate: crsConfig.arts, subjNumReq: crsConfig.artsSubN},
+    school: { graduate: crsConfig.school, submit: crsConfig.school}
+  };
+
+  Object.keys(courseUpdates).forEach(condition => {
+    Object.assign(decisions[condition], courseUpdates[condition]);
+  });
+
   calcValue();
-  updateForm();
-
+  setChartData();
+  callDrawChart();
 }
 
-window.calcValue = function () {
-  arts1_SubjN = subjNum[1];
-  arts2_SubjN = subjNum[2];
-  arts3_SubjN = subjNum[3];
-  stat_text = Math.min(4, grades[4][0]);
-  arts_text = (apply_total == 36) ? stat_text : ((courseLabel == '学') ? 0 : (grades[1][0] + grades[2][0] + grades[3][0]));
-  fl1_text = (document.getElementById('apply_fl1').checked) ? 8 : Math.min(6, grades[5][0]);
-  fl2_text = (courseLabel == '学') ? 0 : Math.min(4, grades[6][0]);
-  sports_text = (courseLabel == '学') ? 0 : Math.min(4, grades[7][0]);
-  libarts_text = Math.min(40, apply_total + arts_text) + fl1_text + fl2_text + sports_text;
-  special_text = grades[8][0] + grades[9][0] + grades[10][0];
-  libarts_media = Math.min(10, grades[1][2] + grades[2][2] + grades[3][2] + grades[5][2] + grades[6][2]);
-  special_media = Math.min(10, grades[8][2] + grades[9][2] + grades[10][2]);
-  media_total = Math.min(10, libarts_media + special_media);
-  media_exe = Math.max(0, grades[1][2] + grades[2][2] + grades[3][2] + grades[5][2] + grades[6][2] + grades[8][2] + grades[9][2] + grades[10][2] - 10);
-  media_max = Math.max(grades[1][2], grades[2][2], grades[3][2], grades[5][2], grades[6][2], grades[8][2], grades[9][2], grades[10][2]);
-  arts_school = (courseLabel == '学') ? 0 : Math.min(12, grades[1][1] + grades[2][1] + grades[3][1] + grades[1][2] + grades[2][2] + grades[3][2]);
-  artsch_exe = (courseLabel == '学') ? 0 : Math.max(0, grades[1][1] + grades[2][1] + grades[3][1] + grades[1][2] + grades[2][2] + grades[3][2] - 12);
-  artsch_max = (courseLabel == '学') ? 0 : Math.max(grades[1][1], grades[2][1], grades[3][1]);
-  fl1_school = Math.min(4, grades[5][1] + grades[5][2]);
-  fl2_school = Math.min(4, grades[6][1] + grades[6][2]);
-  sports_school = (courseLabel == '学') ? 0 : Math.min(4, grades[7][1]);
-  otherarts_school = fl1_school + fl2_school + sports_school
-  special_school = Math.min(28, grades[8][1] + grades[9][1] + grades[10][1] + special_media);
-  if (grades[1][2] == media_max || grades[2][2] == media_max || grades[3][2] == media_max) { arts_school = arts_school - media_exe }
-  else if (grades[5][2] == media_max || grades[6][2] == media_max || grades[7][2] == media_max) { otherarts_school = otherarts_school - media_exe }
-  else if (grades[8][2] == media_max || grades[9][2] == media_max || grades[10][2] == media_max) { special_school = special_school - media_exe }
-  libarts_school = arts_school + otherarts_school;
-  arts1_total = (courseLabel == '学') ? 0 : grades[1][0] + grades[1][1] + grades[1][2];
-  arts2_total = (courseLabel == '学') ? 0 : grades[2][0] + grades[2][1] + grades[2][2];
-  arts3_total = (courseLabel == '学') ? ((apply_total == 36) ? stat_text:0) : grades[3][0] + grades[3][1] + grades[3][2];
-  if (grades[1][1] == artsch_max) { arts1_total = arts1_total - artsch_exe }
-  else if (grades[2][1] == artsch_max) { arts2_total = arts2_total - artsch_exe }
-  else if (grades[3][1] == artsch_max) { arts3_total = arts3_total - artsch_exe }
-  stat_total = grades[4][0] + grades[4][1] + grades[4][2];
-  fl1_total = Math.min(8, fl1_text + fl1_school);
-  fl2_total = (courseLabel == '学') ? 0 : Math.min(4, fl2_text + fl2_school);
-  sports_total = (courseLabel == '学') ? 0 : Math.min(4, sports_text + sports_school);
-  required_total = grades[8][0] + grades[8][1] + grades[8][2];
-  elective1_total = grades[9][0] + grades[9][1] + grades[9][2];
-  elective2_total = grades[10][0] + grades[10][1] + grades[10][2];
-  thesis_total = Math.min(8, grades[11][0]);
-  arts_total = Math.min(40,apply_total + arts_text + arts_school);
-  libarts_total = Math.min(48,arts_total + fl1_total + fl2_total + sports_total);
-  special_total = required_total + elective1_total + elective2_total;
-  text_total = libarts_text + special_text;
-  school_total = libarts_school + special_school;
-  total = Math.min(text_total + school_total + thesis_total, libarts_total + special_total + thesis_total);
-
-  $('#apply-text').text(apply_total);
-
-  $('#ID11001-unit').text(arts_total);
-  $('#ID11101-unit').text(arts1_total);
-  $('#ID11201-unit').text(arts2_total);
-  $('#ID11301-unit').text(arts3_total);
-  $('#ID11311-unit').text(stat_text);
-  $('#ID12001-unit').text(Math.min(40,arts_text + apply_total));
-  $('#ID20001-unit').text(fl1_total);
-  $('#ID30001-unit').text(libarts_total);
-  $('#ID40001-unit').text(required_total + elective1_total + elective2_total);
-  $('#ID41001-unit').text(required_total);
-  $('#ID42001-unit').text(elective1_total);
-  $('#ID43001-unit').text(special_text);
-  $('#ID50001-unit').text(text_total);
-  $('#ID60001-unit').text(school_total);
-  $('#ID70001-unit').text(thesis_total);
-
-  $('#ID11001-req').text(arts3sum);
-  $('#ID11101-req').text(arts);
-  $('#ID11201-req').text(arts);
-  $('#ID11301-req').text(arts);
-  $('#ID11311-req').text(stat);
-  $('#ID12001-req').text(arts3text);
-  $('#ID20001-req').text(fl1);
-  $('#ID30001-req').text(libarts);
-  $('#ID40001-req').text(special);
-  $('#ID41001-req').text(required);
-  $('#ID42001-req').text(elective);
-  $('#ID43001-req').text(spetext);
-  $('#ID50001-req').text(textsum);
-  $('#ID60001-req').text(schooling);
-  $('#ID70001-req').text(thesis);
-
-  $('#ID60001-admit').text(schooling);
-
-  $('#total_units').text(total);
-  $('#total_units2').text(total);
-
-  var arts_total_prog = Math.min(arts_total / 32, 1);
-  var arts1_total_prog = (arts == 0 ? 1 : Math.min(arts1_total / arts, arts1_SubjN >= artsSubN ? 1 : 0.99));
-  var arts2_total_prog = (arts == 0 ? 1 : Math.min(arts2_total / arts, arts2_SubjN >= artsSubN ? 1 : 0.99));
-  var arts3_total_prog = (arts == 0 ? 1 : Math.min(arts3_total / arts, arts3_SubjN >= artsSubN ? 1 : 0.99));
-  var stat_text_prog = (stat == 0 ? 1 : Math.min(stat_text / stat, 1));
-  var arts_text_prog = Math.min((arts_text + apply_total) / 24, 1);
-  var fl1_total_prog = Math.min(fl1_total / 8, 1);
-  var libarts_total_prog = Math.min(libarts_total / 48, 1);
-  var special_total_prog = Math.min(special_total / 68, 1);
-  var required_total_prog = (required == 0 ? 1 : Math.min(required_total / required, 1));
-  var elective_total_prog = (elective == 0 ? 1 : Math.min(elective1_total / elective, 1));
-  var special_text_prog = Math.min(special_text / 40, 1);
-  var text_total_prog = Math.min(text_total / 70, 1);
-  var school_total_prog = Math.min(school_total / schooling, 1);
-  var thesis_total_prog = Math.min(thesis_total / 8, 1);
-
-  $('#ID11001-prog').text(new Intl.NumberFormat('ja', { style: 'percent' }).format(arts_total_prog));
-  $('#ID11101-prog').text(new Intl.NumberFormat('ja', { style: 'percent' }).format(arts1_total_prog));
-  $('#ID11201-prog').text(new Intl.NumberFormat('ja', { style: 'percent' }).format(arts2_total_prog));
-  $('#ID11301-prog').text(new Intl.NumberFormat('ja', { style: 'percent' }).format(arts3_total_prog));
-  $('#ID11311-prog').text(new Intl.NumberFormat('ja', { style: 'percent' }).format(stat_text_prog));
-  $('#ID12001-prog').text(new Intl.NumberFormat('ja', { style: 'percent' }).format(arts_text_prog));
-  $('#ID20001-prog').text(new Intl.NumberFormat('ja', { style: 'percent' }).format(fl1_total_prog));
-  $('#ID30001-prog').text(new Intl.NumberFormat('ja', { style: 'percent' }).format(libarts_total_prog));
-  $('#ID40001-prog').text(new Intl.NumberFormat('ja', { style: 'percent' }).format(special_total_prog));
-  $('#ID41001-prog').text(new Intl.NumberFormat('ja', { style: 'percent' }).format(required_total_prog));
-  $('#ID42001-prog').text(new Intl.NumberFormat('ja', { style: 'percent' }).format(elective_total_prog));
-  $('#ID43001-prog').text(new Intl.NumberFormat('ja', { style: 'percent' }).format(special_text_prog));
-  $('#ID50001-prog').text(new Intl.NumberFormat('ja', { style: 'percent' }).format(text_total_prog));
-  $('#ID60001-prog').text(new Intl.NumberFormat('ja', { style: 'percent' }).format(school_total_prog));
-  $('#ID70001-prog').text(new Intl.NumberFormat('ja', { style: 'percent' }).format(thesis_total_prog));
-
-  arts_total >= 28 ? document.getElementById('ID11001-entry').className = 'done' : document.getElementById('ID11001-entry').className = 'none';
-  arts_total >= arts3sum ? document.getElementById('ID11001-req').className = 'done' : document.getElementById('ID11001-req').className = 'none';
-  (arts1_total >= arts && arts1_SubjN >= artsSubN) ? document.getElementById('ID11101-req').className = 'done' : document.getElementById('ID11101-req').className = 'none';
-  (arts2_total >= arts && arts2_SubjN >= artsSubN) ? document.getElementById('ID11201-req').className = 'done' : document.getElementById('ID11201-req').className = 'none';
-  (arts3_total >= arts && arts3_SubjN >= artsSubN) ? document.getElementById('ID11301-req').className = 'done' : document.getElementById('ID11301-req').className = 'none';
-  stat_text >= stat ? document.getElementById('ID11311-req').className = 'done' : document.getElementById('ID11311-req').className = 'none';
-  (arts_text + apply_total) >= 18 ? document.getElementById('ID12001-entry').className = 'done' : document.getElementById('ID12001-entry').className = 'none';
-  (arts_text + apply_total) >= arts3text ? document.getElementById('ID12001-req').className = 'done' : document.getElementById('ID12001-req').className = 'none';
-  fl1_total >= 6 ? document.getElementById('ID20001-entry').className = 'done' : document.getElementById('ID20001-entry').className = 'none';
-  fl1_total >= fl1 ? document.getElementById('ID20001-req').className = 'done' : document.getElementById('ID20001-req').className = 'none';
-  fl1_total >= fl1 ? document.getElementById('ID20001-req').className = 'done' : document.getElementById('ID20001-req').className = 'none';
-  libarts_total >= 36 ? document.getElementById('ID30001-entry').className = 'done' : document.getElementById('ID30001-entry').className = 'none';
-  libarts_total >= libarts ? document.getElementById('ID30001-submit').className = 'done' : document.getElementById('ID30001-submit').className = 'none';
-  libarts_total >= libarts ? document.getElementById('ID30001-admit').className = 'done' : document.getElementById('ID30001-admit').className = 'none';
-  libarts_total >= libarts ? document.getElementById('ID30001-req').className = 'done' : document.getElementById('ID30001-req').className = 'none';
-  special_total >= 7 ? document.getElementById('ID40001-entry').className = 'done' : document.getElementById('ID40001-entry').className = 'none';
-  special_total >= 35 ? document.getElementById('ID40001-submit').className = 'done' : document.getElementById('ID40001-submit').className = 'none';
-  special_total >= 60 ? document.getElementById('ID40001-admit').className = 'done' : document.getElementById('ID40001-admit').className = 'none';
-  special_total >= special ? document.getElementById('ID40001-req').className = 'done' : document.getElementById('ID40001-req').className = 'none';
-  required_total >= 10 ? document.getElementById('ID41001-submit').className = 'done' : document.getElementById('ID41001-submit').className = 'none';
-  required_total >= required ? document.getElementById('ID41001-req').className = 'done' : document.getElementById('ID41001-req').className = 'none';
-  elective1_total >= elective ? document.getElementById('ID42001-req').className = 'done' : document.getElementById('ID42001-req').className = 'none';
-  special_text >= spetext ? document.getElementById('ID43001-req').className = 'done' : document.getElementById('ID43001-req').className = 'none';
-  text_total >= textsum ? document.getElementById('ID50001-req').className = 'done' : document.getElementById('ID50001-req').className = 'none';
-  school_total >= schooling ? document.getElementById('ID60001-admit').className = 'done' : document.getElementById('ID60001-admit').className = 'none';
-  school_total >= schooling ? document.getElementById('ID60001-req').className = 'done' : document.getElementById('ID60001-req').className = 'none';
-  thesis_total >= thesis ? document.getElementById('ID70001-req').className = 'done' : document.getElementById('ID70001-req').className = 'none';
-
-  $('#ID30001-prog').text(new Intl.NumberFormat('ja', { style: 'percent' }).format(libarts_total_prog));
-
-}
-
-google.charts.load('current', { 'packages': ['corechart'] });
-google.charts.setOnLoadCallback(drawChart);
-function drawChart() {
-  //control is here
-  let larguraGraficoFora = 240;
-  let alturaGraficoFora = 240;
-  let furoGraficoFora = 0.75;
-  let furoGraficoFora2 = 0.5;
-  let furoGraficoFora3 = 0.25;
-  var temp = 11;
-
-  data1 = google.visualization.arrayToDataTable([
-    ['Category', 'Units'],
-    ['認定', 0],      // gray
-    ['人文済', 0],    // maroon
-    ['人文未', 6],    // indianred
-    ['社会済', 0],    // olive
-    ['社会未', 6],    // palegoldenrod
-    ['自然済', 0],    // green
-    ['自然未', 6],    // aquamarine
-    ['3分野未', 14],  // lightsalmon
-    ['必修語済', 0],  // lime
-    ['必修語未', 8],  // yellowgreen
-    ['総合済', 0],    // red
-    ['総合未', 8],    // lightsalmon
-    ['必修済', 0],    // navy
-    ['必修未', 0],    // steelblue
-    ['選択必済', 0],  // purple
-    ['選択必未', 0],  // plum
-    ['選択済', 0],    // teal
-    ['選択未', 68],   // darkturquoise
-    ['卒論済', 0],    // fuchsia
-    ['卒論未', 8]     // pink
-  ]);
-
-  data2 = google.visualization.arrayToDataTable([
-    ['Category', 'Units'],
-    ['3分野済', 0],
-    ['3分野未', 32],
-    ['必修語済', 0],
-    ['必修語未', 8],
-    ['総合済', 0],
-    ['総合未', 8],
-    ['必修済', 0],
-    ['必修未', 0],
-    ['選択必済', 0],
-    ['選択必未', 0],
-    ['選択済', 0],
-    ['選択未', 68],
-    ['卒論済', 0],
-    ['卒論未', 8]
-  ]);
-
-  data3 = google.visualization.arrayToDataTable([
-    ['Category', 'Units'],
-    ['総合済', 0],
-    ['総合未', 48],
-    ['専門済', 0],
-    ['専門未', 68],
-    ['卒論済', 0],
-    ['卒論未', 8]
-  ]);
-
-  data4 = google.visualization.arrayToDataTable([
-    ['Category', 'Units'],
-    ['認定', 0],
-    ['3分T済', 0],
-    ['3分T未', 24],
-    ['必語T済', 0],
-    ['他総T済', 0],
-    ['専テキ済', 0],
-    ['専テキ未', 40],
-    ['テキ未', 6],
-    ['3分スク済', 0],
-    ['必語スク済', 0],
-    ['専スク済', 0],
-    ['スク未', 30],
-    ['任意未', 16],
-    ['卒論済', 0],
-    ['卒論未', 8]
-  ]);
-
-  data5 = google.visualization.arrayToDataTable([
-    ['Category', 'Units'],
-    ['テキ済', 0],
-    ['テキ未', 70],
-    ['スク済', 0],
-    ['スク未', 30],
-    ['任意未', 16],
-    ['卒論済', 0],
-    ['卒論未', 8]
-  ]);
-
-  var options1 = {
-    width: larguraGraficoFora,
-    height: alturaGraficoFora,
-    chartArea: { left: 0, top: 0, width: '100%', height: '100%' },
-    pieHole: furoGraficoFora,
-    colors: ['gray', 'maroon', 'indianred', 'olive', 'palegoldenrod', 'green', 'aquamarine', 'lightsalmon', 'lime', 'lightgreen', 'gray', 'silver', 'teal', 'darkturquoise', 'purple', 'plum', 'navy', 'lightsteelblue', 'fuchsia', 'pink'],
-    pieSliceText: 'value',
-    legend: 'none'
+function calcValue () {
+  // ヘルパー関数
+  const clamp = (condition, ifTrue, ifFalse) => condition ? ifTrue : ifFalse;
+  const calcTotal = (data = [], indices = []) => {
+    if (!Array.isArray(data)) {
+      return 0;
+    }    
+    // インデックスが指定されていない場合、デフォルトで全要素の合計を計算
+    if (indices.length === 0) {
+      return data.reduce((sum, value) => sum + (parseInt(value) || 0), 0);
+    }
+    // インデックスが指定されている場合、そのインデックスに基づいて合計を計算
+    return indices.reduce((sum, index) => sum + (parseInt(data[index]) || 0), 0);
   };
+  const course = profile.value.course;
+  //console.log(grades);
 
-  var options2 = {
-    width: larguraGraficoFora * furoGraficoFora,
-    height: alturaGraficoFora * furoGraficoFora,
-    chartArea: { left: 0, top: 0, width: '100%', height: '100%' },
-    pieHole: furoGraficoFora2 / furoGraficoFora,
-    colors: ['red', 'lightsalmon', 'lime', 'lightgreen', 'gray', 'silver', 'teal', 'darkturquoise', 'purple', 'plum', 'navy', 'lightsteelblue', 'fuchsia', 'pink'],
-    pieSliceText: 'value',
-    backgroundColor: 'transparent',
-    legend: 'none'
-  };
+  [decisions.arts1.subjNum, decisions.arts2.subjNum, decisions.arts3.subjNum] = [subjNum[1], subjNum[2], subjNum[3]];
+  // テキストの計算
+  const applyText = decisions.apply.text = min(40, units[0][0]);
+  decisions.arts1.text = min(20, units[1][0]);
+  decisions.arts2.text = min(20, units[2][0]);
+  decisions.arts3.text = min(20, units[3][0]);
+  decisions.statT.text = min(4, units[4][0]);
+  decisions.fl1.text = min(6, units[5][0]);
+  decisions.fl2.text = min(4, units[6][0]);
+  decisions.sports.text = min(4, units[7][0]);
+  decisions.special.text = min(68, sum(units[8][0],units[9][0],units[10][0]));
 
-  var options3 = {
-    width: larguraGraficoFora * furoGraficoFora2,
-    height: alturaGraficoFora * furoGraficoFora2,
-    chartArea: { left: 0, top: 0, width: '100%', height: '100%' },
-    pieHole: furoGraficoFora3 / furoGraficoFora2,
-    colors: ['red', 'lightsalmon', 'navy', 'lightsteelblue', 'fuchsia', 'pink'],
-    pieSliceText: 'value',
-    backgroundColor: 'transparent',
-    legend: 'none'
-  };
+  decisions.arts.text = min(40, sum(decisions.arts1.text,decisions.arts2.text,decisions.arts3.text));
+  decisions.arts.text = min(40, applyText + clamp(applyText == 36, decisions.statT.text, decisions.arts.text));
+  decisions.fl1.text = min(8,clamp(document.getElementById('apply_fl1').checked, 8, decisions.fl1.text));
+  decisions.otherArts.text = min(8, sum(decisions.fl2.text,decisions.sports.text));
+  decisions.liberal.text = min(48, sum(decisions.arts.text,decisions.otherArts.text,decisions.fl1.text));
+  decisions.total.text = min(86, decisions.liberal.text + decisions.special.text);
+  decisions.free.text = max(0, sum(decisions.total.text, max(0, decisions.artsT.graduate - decisions.artsT.total), max(0, decisions.specialT.graduate - decisions.specialT.total)) - decisions.text.graduate);
 
-  var options4 = {
-    width: larguraGraficoFora,
-    height: alturaGraficoFora,
-    chartArea: { left: 0, top: 0, width: '100%', height: '100%' },
-    pieHole: furoGraficoFora,
-    colors: ['gray', 'red', 'lightsalmon', 'lime', 'silver', 'navy', 'lightsteelblue', 'powderblue', 'red', 'lime', 'navy', 'wheat', 'white', 'fuchsia', 'pink'],
-    pieSliceText: 'value',
-    legend: 'none'
-  };
+  // スクーリングの計算
+  decisions.arts1.school = min(12, units[1][1]);
+  decisions.arts2.school = min(12, units[2][1]);
+  decisions.arts3.school = min(12, units[3][1]);
+  decisions.fl1.school = min(4, units[5][1]);
+  decisions.fl2.school = min(4, units[6][1]);
+  decisions.sports.school = min(4, units[7][1]);
+  decisions.special.school = min(28, sum(units[8][1],units[9][1],units[10][1]));
+  decisions.arts1.media = min(10, units[1][2]);
+  decisions.arts2.media = min(10, units[2][2]);
+  decisions.arts3.media = min(10, units[3][2]);
+  decisions.fl1.media = min(2, units[5][2]);
+  decisions.special.media = min(10, sum(units[8][2],units[9][2],units[10][2]));
+  const medias = [decisions.arts1.media,decisions.arts2.media,decisions.arts3.media,decisions.fl1.media,decisions.special.media];
+  [decisions.arts1.media,decisions.arts2.media,decisions.arts3.media,decisions.fl1.media,decisions.special.media] = adjustValues(medias, 10);
 
-  var options5 = {
-    width: larguraGraficoFora * furoGraficoFora,
-    height: alturaGraficoFora * furoGraficoFora,
-    chartArea: { left: 0, top: 0, width: '100%', height: '100%' },
-    pieHole: furoGraficoFora2 / furoGraficoFora,
-    colors: ['aqua', 'powderblue', 'gold', 'wheat', 'white', 'fuchsia', 'pink'],
-    pieSliceText: 'value',
-    backgroundColor: 'transparent',
-    legend: 'none'
-  };
+  decisions.arts1.school = min(12, sum(decisions.arts1.school,decisions.arts1.media));
+  decisions.arts2.school = min(12, sum(decisions.arts2.school,decisions.arts2.media));
+  decisions.arts3.school = min(12, sum(decisions.arts3.school,decisions.arts3.media));
+  decisions.fl1.school = min(4, sum(decisions.fl1.school,decisions.fl1.media));
+  decisions.special.school = min(28, sum(decisions.special.school,decisions.special.media));
 
-  var chart1 = new google.visualization.PieChart(document.getElementById('donutchart_1'));
-  chart1.draw(data1, options1);
+  const artsSchools = [decisions.arts1.school,decisions.arts2.school,decisions.arts3.school];
+  [decisions.arts1.school,decisions.arts2.school,decisions.arts3.school] = adjustValues(artsSchools, 12);
+  decisions.arts.school = min(12, sum(decisions.arts1.school, decisions.arts2.school, decisions.arts3.school));
+  decisions.otherArts.school = min(8, sum(decisions.fl2.school,decisions.sports.school));
+  decisions.liberal.school = min(24, sum(decisions.arts.school, decisions.fl1.school, decisions.otherArts.school));
+  decisions.special.school = min(28, decisions.special.school);
 
-  var chart2 = new google.visualization.PieChart(document.getElementById('donutchart_2'));
-  chart2.draw(data2, options2);
-
-  var chart3 = new google.visualization.PieChart(document.getElementById('donutchart_3'));
-  chart3.draw(data3, options3);
-
-  var chart4 = new google.visualization.PieChart(document.getElementById('donutchart_4'));
-  chart4.draw(data4, options4);
-
-  var chart5 = new google.visualization.PieChart(document.getElementById('donutchart_5'));
-  chart5.draw(data5, options5);
-
-  var rewriteChart = function () {
-    changeValue();
-    calcValue();
-    data1.setValue(0, 1, apply_total);
-    data1.setValue(1, 1, arts1_total);
-    data1.setValue(3, 1, arts2_total);
-    data1.setValue(5, 1, arts3_total);
-    data1.setValue(8, 1, fl1_total);
-    data1.setValue(10, 1, fl2_total + sports_total);
-    data1.setValue(12, 1, required_total);
-    data1.setValue(14, 1, elective1_total);
-    data1.setValue(16, 1, elective2_total);
-    data1.setValue(18, 1, thesis_total);
-
-    data2.setValue(0, 1, arts_total);
-    data2.setValue(2, 1, fl1_total);
-    data2.setValue(4, 1, fl2_total + sports_total);
-    data2.setValue(6, 1, required_total);
-    data2.setValue(8, 1, elective1_total);
-    data2.setValue(10, 1, elective2_total);
-    data2.setValue(12, 1, thesis_total);
-
-    data3.setValue(0, 1, arts_total + fl1_total + fl2_total + sports_total);
-    data3.setValue(2, 1, required_total + elective1_total + elective2_total);
-    data3.setValue(4, 1, thesis_total);
-
-    data4.setValue(0, 1, Math.max(0, apply_total));
-    data4.setValue(1, 1, Math.max(0, arts_text));
-    data4.setValue(3, 1, Math.max(0, fl1_text));
-    data4.setValue(4, 1, Math.max(0, fl2_text + sports_text));
-    data4.setValue(5, 1, Math.max(0, special_text));
-    data4.setValue(8, 1, Math.max(0, arts_school));
-    data4.setValue(9, 1, Math.max(0, otherarts_school));
-    data4.setValue(10, 1, Math.max(0, special_school));
-    data4.setValue(13, 1, Math.max(0, thesis_total));
-
-    data5.setValue(0, 1, text_total);
-    data5.setValue(2, 1, school_total);
-    data5.setValue(5, 1, thesis_total);
-
-    data1.setValue(2, 1, Math.max(0, arts - arts1_total));
-    data1.setValue(4, 1, Math.max(0, arts - arts2_total));
-    data1.setValue(6, 1, Math.max(0, arts - arts3_total));
-    data1.setValue(7, 1, Math.max(0, arts3sum - apply_total - Math.max(arts, arts1_total) - Math.max(arts, arts2_total) - Math.max(arts, arts3_total)));
-    data1.setValue(9, 1, Math.max(0, fl1 - fl1_total));
-    data1.setValue(11, 1, Math.max(0, otherarts - (Math.max(0, arts_total - arts3sum) + fl2_total + sports_total)));
-    data1.setValue(13, 1, Math.max(0, required - required_total));
-    data1.setValue(15, 1, Math.max(0, elective - elective1_total));
-    data1.setValue(17, 1, Math.max(0, special - required - Math.max(0, required_total - required) - elective - Math.max(0, elective1_total - elective) - elective2_total));
-    data1.setValue(19, 1, Math.max(0, (thesis - thesis_total)));
-
-    data2.setValue(1, 1, Math.max(0, arts3sum - arts_total));
-    data2.setValue(3, 1, Math.max(0, fl1 - fl1_total));
-    data2.setValue(5, 1, Math.max(0, otherarts - (Math.max(0, arts_total - arts3sum) + fl2_total + sports_total)));
-    data2.setValue(7, 1, Math.max(0, required - required_total));
-    data2.setValue(9, 1, Math.max(0, elective - elective1_total));
-    data2.setValue(11, 1, Math.max(0, special - required - Math.max(0, required_total - required) - elective - Math.max(0, elective1_total - elective) - elective2_total));
-    data2.setValue(13, 1, Math.max(0, thesis - thesis_total));
-
-    data3.setValue(1, 1, Math.max(0, libarts - (arts_total + fl1_total + fl2_total + sports_total)));
-    data3.setValue(3, 1, Math.max(0, special - (required_total + elective1_total + elective2_total)));
-    data3.setValue(5, 1, Math.max(0, (thesis - thesis_total)));
-
-    data4.setValue(2, 1, Math.max(0, (apply_total >= 36) ? 0 : (24 - arts_text - apply_total)));
-    data4.setValue(6, 1, Math.max(0, 40 - special_text));
-    data4.setValue(7, 1, apply_total >= 36 ? 0 : Math.max(0, 70 - (Math.max(24, arts_text) + Math.max(40, special_text) + (fl1_text + fl2_text + sports_text))));
-    data4.setValue(11, 1, Math.max(0, schooling - school_total));
-    data4.setValue(12, 1, Math.max(0, 116 - (Math.max(70, apply_total + 40, text_total) + Math.max(schooling, school_total))));
-    data4.setValue(14, 1, Math.max(0, (thesis - thesis_total)));
-
-    data5.setValue(1, 1, Math.max(Math.max(0, 70 - text_total), Math.max(0, 40 - special_text)));
-    data5.setValue(3, 1, Math.max(0, schooling - school_total));
-    data5.setValue(4, 1, Math.max(0, 116 - (Math.max(70, apply_total + 40, text_total) + Math.max(schooling, school_total))));
-    data5.setValue(6, 1, Math.max(0, (thesis - thesis_total)));
-
-    chart1.draw(data1, options1);
-    chart2.draw(data2, options2);
-    chart3.draw(data3, options3);
-    chart4.draw(data4, options4);
-    chart5.draw(data5, options5);
+  // スクーリングの調整
+  function adjustValues(values, max) {
+    let sum = values.reduce((acc, val) => acc + val, 0);    // 合計を計算
+    while (sum > max) {                                     // 合計がmax以内になるまでループ
+      let maxIndex = values.indexOf(Math.max(...values));   // 最大値を取得
+      values[maxIndex] -= 2;                                // 最大値から2を引く  
+      sum = values.reduce((acc, val) => acc + val, 0);      // 新しい合計を計算
+    }
+    return values;    // 結果を返す
   }
+  decisions.total.school = min(46, decisions.liberal.school + decisions.special.school);
+  decisions.free.school = max(0, decisions.total.school - decisions.school.graduate)
 
-  $('#arts1-subjNum').change(rewriteChart);
-  $('#arts2-subjNum').change(rewriteChart);
-  $('#arts3-subjNum').change(rewriteChart);
-  $('#arts1-text').change(rewriteChart);
-  $('#arts1-school').change(rewriteChart);
-  $('#arts1-media').change(rewriteChart);
-  $('#arts2-text').change(rewriteChart);
-  $('#arts2-school').change(rewriteChart);
-  $('#arts2-media').change(rewriteChart);
-  $('#arts3-text').change(rewriteChart);
-  $('#arts3-school').change(rewriteChart);
-  $('#arts3-media').change(rewriteChart);
-  $('#stat-text').change(rewriteChart);
-  $('#stat-school').change(rewriteChart);
-  $('#stat-media').change(rewriteChart);
-  $('#fl1-text').change(rewriteChart);
-  $('#fl1-school').change(rewriteChart);
-  $('#fl1-broad').change(rewriteChart);
-  $('#fl2-text').change(rewriteChart);
-  $('#fl2-school').change(rewriteChart);
-  $('#fl2-broad').change(rewriteChart);
-  $('#sports-text').change(rewriteChart);
-  $('#sports-school').change(rewriteChart);
-  $('#required-text').change(rewriteChart);
-  $('#required-school').change(rewriteChart);
-  $('#required-media').change(rewriteChart);
-  $('#elective1-text').change(rewriteChart);
-  $('#elective1-school').change(rewriteChart);
-  $('#elective1-media').change(rewriteChart);
-  $('#elective2-text').change(rewriteChart);
-  $('#elective2-school').change(rewriteChart);
-  $('#elective2-media').change(rewriteChart);
-  $('#thesis-total').change(rewriteChart);
+  // 合計の計算
+  decisions.apply.total = min(40, decisions.apply.text);
+  decisions.arts.total = min(40, sum(decisions.arts.text, decisions.arts.school));
+  decisions.arts1.total = min(20, sum(decisions.arts1.text, decisions.arts1.school));
+  decisions.arts2.total = min(20, sum(decisions.arts2.text, decisions.arts2.school));
+  decisions.arts3.total = min(20, sum(decisions.arts3.text, decisions.arts3.school));
+  decisions.statT.total = min(4, decisions.statT.text);
+  decisions.artsT.total = min(40, decisions.arts.text);
+  decisions.fl1.total = min(8, sum(decisions.fl1.text,decisions.fl1.school));
+  decisions.fl2.total = min(4, decisions.fl2.text + decisions.fl2.school);
+  decisions.sports.total = min(4, decisions.sports.text + decisions.sports.school);
+  decisions.otherArts.total = min(8, decisions.otherArts.text + decisions.otherArts.school);
+  decisions.liberal.total = min(48, decisions.liberal.text + decisions.liberal.school);
+  decisions.required.total = min(68, calcTotal(units[8]));
+  decisions.elective1.total = min(68, calcTotal(units[9]));
+  decisions.elective2.total = min(68, calcTotal(units[10]));
+  decisions.specialT.total = min(68, decisions.special.text);
+  decisions.special.total = min(68, decisions.special.text + decisions.special.school);
+  decisions.text.total = min(86, decisions.liberal.text + decisions.special.text);
+  decisions.school.total = min(46, decisions.liberal.school + decisions.special.school);
+  decisions.thesis.total = min(8, units[11][0]);
+  decisions.total.total = min(decisions.text.total + decisions.school.total, decisions.liberal.total + decisions.special.total)+ decisions.thesis.total;
+  decisions.free.total = min(16, sum(decisions.free.text,decisions.free.school));
 
-  $('#department').change(rewriteChart);
-  $('#section').change(rewriteChart);
-  $('#course').change(rewriteChart);
+  const capAtZero = (rawTotal) => clamp(course == '学士入学', 0, rawTotal);
+  const propertiesToCap = ['text','school','total'];
+  const itemsToCap = ['arts1','arts2','arts3','fl2','sports'];
+  propertiesToCap.forEach(prop => {
+    itemsToCap.forEach(item => {
+        decisions[item][prop] = capAtZero(decisions[item][prop]);
+    });
+  });
 
-  $('#apply_stat').change(rewriteChart);
-  $('#apply_fl1').change(rewriteChart);
+  // 進捗の計算
+  const updateProg = (item) => {
+    const prog = item.graduate === 0 ? 1 : Math.min(item.total / item.graduate, 1);
+    item.prog = (item.subjNumReq > 0 && prog === 1) ? (item.subjNum >= item.subjNumReq ? prog : 0.99) : prog;
+  };
+  const getElementId = (key, suffix) => `${key}-${suffix}`;
+  const formatter = new Intl.NumberFormat('ja', { style: 'percent' });
+
+  //console.log(decisions);
+
+  // プロパティの設定
+  // ここあとで直す
+  const properties = {
+    graduate: ['total', 'graduate'],
+    entry: ['total', 'entry'],
+    approve: ['total', 'approve'],
+    submit: ['total', 'submit']
+  };
+
+  // 関数定義
+  const updateProperties = (item, key) => {
+    const propertyKeys = ['total', 'entry', 'approve', 'submit', 'graduate', 'prog'];
+    propertyKeys.forEach(property => {
+      const elementId = getElementId(key, property);
+      const value = property === 'prog' ? formatter.format(item[property]) : item[property];
+      $(document.getElementById(elementId)).text(value !== undefined ? value : '');
+    });
+  };
+
+  const updateConditions = (item, key) => {
+    Object.entries(properties).forEach(([status, [totalProp, compareProp]]) => {
+      if (item[compareProp] !== undefined) {
+        const id = `${key}-${status}`;
+        const condition = item[totalProp] >= item[compareProp];
+        document.getElementById(id).className = condition ? 'done' : 'none';
+      }
+    });
+  };
+
+  // メイン処理
+  Object.entries(decisions)
+    .filter(([key, item]) => item.id <= 15) // id が15以下のエントリーを選択
+    .forEach(([key, item]) => {
+      updateProg(item); // updateProg 関数を適用
+      updateProperties(item, key);
+      updateConditions(item, key);
+    });
+
+    $('#Apply-text').text(applyText);
+}
+
+function setChartData () {
+  chartData.units.apply = decisions.apply.total;
+  chartData.units.arts1Done = decisions.arts1.total;
+  chartData.units.arts2Done = decisions.arts2.total;
+  chartData.units.arts3Done = decisions.arts3.total;
+  chartData.units.fl1Done = decisions.fl1.total;
+  chartData.units.liberalDone = decisions.otherArts.total;
+  chartData.units.requiredDone = decisions.required.total;
+  chartData.units.elective1Done = decisions.elective1.total;
+  chartData.units.elective2Done = decisions.elective2.total;
+  chartData.units.thesisDone = decisions.thesis.total;
+  chartData.units.artsTDone = sum(chartData.units.arts1Done,chartData.units.arts2Done,chartData.units.arts3Done);
+  chartData.units.fl1TDone = decisions.fl1.text;
+  chartData.units.liberalTDone = decisions.otherArts.text;
+  chartData.units.specialTDone = decisions.special.text;
+  chartData.units.artsSDone = decisions.arts.school;
+  chartData.units.fl1SDone = decisions.fl1.school;
+  chartData.units.liberalSDone = decisions.otherArts.school;
+  chartData.units.specialSDone = decisions.special.school;
+  chartData.units.arts1None = max(0, decisions.arts1.graduate - decisions.arts1.total);
+  chartData.units.arts2None = max(0, decisions.arts2.graduate - decisions.arts2.total);
+  chartData.units.arts3None = max(0, decisions.arts3.graduate - decisions.arts3.total)
+    + decisions.statT.graduate>0 ? max(0,decisions.statT.graduate - decisions.statT.total):0;
+  chartData.units.fl1None = max(0, decisions.fl1.graduate - decisions.fl1.total);
+  const applyAlloc = chartData.units.apply;
+  const arts1Alloc = sum(decisions.arts1.total,chartData.units.arts1None);
+  const arts2Alloc = sum(decisions.arts2.total,chartData.units.arts2None);
+  const arts3Alloc = sum(decisions.arts3.total,chartData.units.arts3None);
+  const artsNone = chartData.units.artsNone = max(0, decisions.arts.graduate - sum(applyAlloc,arts1Alloc,arts2Alloc,arts3Alloc));
+  const artsAlloc = sum(applyAlloc,arts1Alloc,arts2Alloc,arts3Alloc,artsNone);
+  const fl1Alloc = sum(decisions.fl1.total,chartData.units.fl1None);
+  chartData.units.liberalNone = max(0, decisions.liberal.graduate - sum(artsAlloc,fl1Alloc,decisions.otherArts.total));
+  chartData.units.requiredNone = max(0, decisions.required.graduate - decisions.required.total);
+  chartData.units.elective1None = max(0, decisions.elective1.graduate - decisions.elective1.total);
+  const requiredAlloc = sum(decisions.required.total,chartData.units.requiredNone);
+  const elective1Alloc = sum(decisions.elective1.total,chartData.units.elective1None);
+  chartData.units.elective2None = max(0, decisions.special.graduate - sum(requiredAlloc,elective1Alloc,decisions.elective2.total));
+  chartData.units.thesisNone = max(0, decisions.thesis.graduate - decisions.thesis.total);
+  const thesisAlloc = sum(decisions.thesis.total, chartData.units.thesisNone);
+  chartData.units.artsTNone = max(0, decisions.artsT.graduate - decisions.artsT.total)
+    + (decisions.statT.graduate>0 ? max(0,decisions.statT.graduate - decisions.statT.total) : 0);
+  chartData.units.specialTNone = max(0, decisions.specialT.graduate - decisions.specialT.total);
+  const artsTAlloc = sum(decisions.artsT.total,chartData.units.artsTNone);
+  const specialTAlloc = sum(decisions.specialT.total,chartData.units.specialTNone);
+  chartData.units.textNone = max(0, decisions.text.graduate - sum(artsTAlloc,specialTAlloc));
+  chartData.units.schoolNone = max(0, decisions.school.graduate - decisions.school.total);
+  const textAlloc = sum(artsTAlloc, specialTAlloc, chartData.units.textNone);
+  const schoolAlloc = sum(decisions.school.total, chartData.units.schoolNone);
+  chartData.units.totalUp = sum(
+    chartData.units.apply,chartData.units.arts1Done,chartData.units.arts2Done,chartData.units.arts3Done,chartData.units.fl1Done,chartData.units.liberalDone,
+    chartData.units.requiredDone,chartData.units.elective1Done,chartData.units.elective2Done,chartData.units.thesisDone);
+  chartData.units.totalDown = sum(
+    chartData.units.apply,chartData.units.artsTDone,chartData.units.fl1TDone,chartData.units.liberalTDone,chartData.units.specialTDone,
+    chartData.units.liberalSDone,chartData.units.specialSDone,chartData.units.thesisDone);
+  chartData.units.freeNone = max(0, decisions.total.graduate - sum(chartData.units.totalDown,chartData.units.artsTNone,chartData.units.specialTNone,chartData.units.textNone,chartData.units.schoolNone,chartData.units.thesisNone));
+}
+
+// グラフを描画する関数
+function drawChart() {
+  const [WidthOutside, HeightOutside] = [240, 240];
+  const [ChartSize, ChartSizeRatioOuter, ChartSizeRatioMiddle, ChartSizeRatioInner] = [1, 0.75, 0.5, 0.25];
+
+  // 基本設定オプション
+  const baseOptions = {
+    chartArea: { left: 0, top: 0, width: '100%', height: '100%' },
+    pieSliceText: 'value',
+    legend: 'none',
+  };
+
+  // グラフオプションを生成する関数
+  const getChartOptions = (chartRatio, pieHoleRatio) => ({
+    ...baseOptions,
+    width: WidthOutside * chartRatio,
+    height: HeightOutside * chartRatio,
+    pieHole: pieHoleRatio,
+    colors: [],
+    backgroundColor: pieHoleRatio === 1 ? undefined : 'transparent',
+  });
+
+  // 各グラフのオプション設定
+  const options = {
+    UpOuter: getChartOptions(ChartSize, ChartSizeRatioOuter),
+    UpMiddle: getChartOptions(ChartSizeRatioOuter, ChartSizeRatioMiddle / ChartSizeRatioOuter),
+    UpInner: getChartOptions(ChartSizeRatioMiddle, ChartSizeRatioInner / ChartSizeRatioMiddle),
+    DownOuter: getChartOptions(ChartSize, ChartSizeRatioOuter),
+    DownMiddle: getChartOptions(ChartSizeRatioOuter, ChartSizeRatioMiddle / ChartSizeRatioOuter),
+  };
+
+  // グラフ設定の配列
+  const chartConfigs = [
+    { dataKey: 'dataUpOuter', elementId: 'donutChartUpOuter', options: options.UpOuter },
+    { dataKey: 'dataUpMiddle', elementId: 'donutChartUpMiddle', options: options.UpMiddle },
+    { dataKey: 'dataUpInner', elementId: 'donutChartUpInner', options: options.UpInner },
+    { dataKey: 'dataDownOuter', elementId: 'donutChartDownOuter', options: options.DownOuter },
+    { dataKey: 'dataDownMiddle', elementId: 'donutChartDownMiddle', options: options.DownMiddle }
+  ];
+
+  chartConfigs.forEach(({ dataKey, elementId, options }) => {
+    const data = google.visualization.arrayToDataTable(
+      [['Category', 'Units']]
+      .concat(Object.entries(chartData[dataKey]).map(([key, { label, calc }]) => {
+        const units = calc ? calc.reduce((sum, item) => sum + (chartData.units[item] || 0), 0) : chartData.units[key];
+        return [label, units];
+      }))
+    );
+    options.colors = Object.values(chartData[dataKey]).map(item => item.color);
+    new google.visualization.PieChart(document.getElementById(elementId)).draw(data, options);
+  });
+  $('#total_units').text(chartData.units.totalUp);
+  $('#total_units2').text(chartData.units.totalDown);
+}
+
+function ensureGoogleChartsLoaded(callback) {
+  if (google && google.visualization && google.visualization.arrayToDataTable) {
+    callback();
+  } else {
+    google.charts.setOnLoadCallback(callback);
+  }
+}
+
+// 他の処理から呼び出す場合
+function callDrawChart() {
+  ensureGoogleChartsLoaded(drawChart);
 }

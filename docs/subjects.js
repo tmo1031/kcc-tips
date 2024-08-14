@@ -1,6 +1,4 @@
 const optionsData = {
-  default: [
-    ],
   text: [
     { value: '----テキスト----', group: '', category: [''], subcategory: '', form: 'T', level: 0, unit: 0, start: 2000, end: 2100 },
     { value: '哲学', group: 'E', category: ['A'], subcategory: '人文', form: 'T', level: 3, unit: 4, start: 2000, end: 2100 },
