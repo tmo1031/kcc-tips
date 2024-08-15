@@ -33,16 +33,6 @@
       width: auto; /* 幅を自動調整 */
     }
 
-    .label-cell {
-      font-size: 15px;
-    }
-
-    @media (max-width: 600px){
-      .label-cell {
-        font-size: 11px;
-      }
-    }
-
     .overlayMid, .overlayInner, .overlay-label {
     display: block;
     text-align: center;
@@ -154,13 +144,22 @@
     .none {
       text-align: center;
     }
-  
-    /* 列のスタイル */
+
     .term-column {
-      width: 130px;
-      text-align: left;
+        width: 130px;
+        text-align: left;
+        font-size: 15px;
+      }
+    @media (max-width: 600px){
+      .term-column {
+        width: 80px;
+        text-align: left;
+        font-size: 10px;
+      }
+      .label-text {
+        font-size: 0.8em;
+      }
     }
-  
     .subject-column {
       width: auto;
     }
@@ -281,7 +280,7 @@
           <table id="ActualTable">
             <thead>
               <tr>
-                <th>受講時期</th>
+                <th class="term-column">受講時期</th>
                 <th>科目名</th>
                 <th>評価</th>
                 <th>レポ</th>

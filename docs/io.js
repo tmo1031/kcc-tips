@@ -718,7 +718,7 @@ function refresh(mode) {
         const y = parsedYear + adj;
         
         labelCell.id = `label-${i}`;
-        labelCell.classList.add('label-cell');
+        labelCell.classList.add('term-column');
         row.appendChild(labelCell);
     
         for (let j = 0; j < groups; j++) {        
@@ -775,6 +775,7 @@ function refresh(mode) {
         const labelEle = document.getElementById(labelId);
         if (labelEle) {
           labelEle.textContent = termLabel[i];
+          labelEle.classList.add('label-text');
         }
       }
     }
