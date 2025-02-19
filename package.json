@@ -1,0 +1,19 @@
+{
+  "name": "kcc-tips",
+  "version": "1.0.0",
+  "description": "慶應義塾大学通信教育課程(慶應通信)学生向けのお役立ち情報/ツール",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@eslint/js": "^9.20.0",
+    "eslint": "^9.20.1",
+    "globals": "^15.15.0"
+  }
+}
