@@ -5,11 +5,11 @@
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-9W0RED852G"></script>
   <script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
 
-  gtag('config', 'G-9W0RED852G');
+    gtag('config', 'G-9W0RED852G');
   </script>
 
   <!-- jQuery and Google Charts -->
@@ -26,17 +26,23 @@
   <title>慶應通信 卒業要件チェックシート</title>
   <style>
     select {
-      width: 100%; /* コンテナの幅に合わせる */
-      box-sizing: border-box; /* パディングとボーダーを含めた幅計算 */
-    }
-    .no-style-select {
-      width: auto; /* 幅を自動調整 */
+      width: 100%;
+      /* コンテナの幅に合わせる */
+      box-sizing: border-box;
+      /* パディングとボーダーを含めた幅計算 */
     }
 
-    .overlayMid, .overlayInner, .overlay-label {
-    display: block;
-    text-align: center;
-    position: absolute;
+    .no-style-select {
+      width: auto;
+      /* 幅を自動調整 */
+    }
+
+    .overlayMid,
+    .overlayInner,
+    .overlay-label {
+      display: block;
+      text-align: center;
+      position: absolute;
     }
 
     .overlay-label {
@@ -66,10 +72,11 @@
       font-size: 80px;
     }
 
-    #JSFiddle, #JSFiddle2 {
+    #JSFiddle,
+    #JSFiddle2 {
       position: relative;
     }
-  
+
     /* タブスタイル */
     .tabs {
       margin-top: 50px;
@@ -79,7 +86,7 @@
       width: 100%;
       margin: 0 auto;
     }
-  
+
     .tab_item {
       width: calc(100% / 5);
       height: 50px;
@@ -94,16 +101,16 @@
       font-weight: bold;
       transition: all 0.2s ease;
     }
-  
+
     .tab_item:hover {
       opacity: 0.75;
     }
-  
+
     /* ラジオボタンを全て消す */
     input[name="tab_item"] {
       display: none;
     }
-  
+
     /* タブコンテンツ */
     .tab_content {
       display: none;
@@ -111,7 +118,7 @@
       clear: both;
       overflow: hidden;
     }
-  
+
     #plan:checked~#plan_content,
     #actual:checked~#actual_content,
     #input:checked~#input_content,
@@ -119,77 +126,92 @@
     #interface:checked~#interface_content {
       display: block;
     }
-  
-    .tabs input:checked + .tab_item {
+
+    .tabs input:checked+.tab_item {
       background-color: #5ab4bd;
       color: #fff;
     }
-  
+
     /* 共通テーブルスタイル */
-    .inputTable, .gradeTable {
+    .inputTable,
+    .gradeTable {
       font-size: 6px;
     }
-  
+
     /* テーブルセルスタイル */
-    .unit, .entry, .approve, .submit, .req, .prog {
+    .unit,
+    .entry,
+    .approve,
+    .submit,
+    .req,
+    .prog {
       text-align: center;
     }
-  
+
     /* 特殊なスタイル */
     .done {
       text-align: center;
       background-color: limegreen;
     }
-  
+
     .none {
       text-align: center;
     }
 
     .term-column {
-        width: 130px;
-        text-align: left;
-        font-size: 15px;
-      }
-    @media (max-width: 600px){
+      width: 130px;
+      text-align: left;
+      font-size: 15px;
+    }
+
+    @media (max-width: 600px) {
       .term-column {
         width: 80px;
         text-align: left;
         font-size: 10px;
       }
+
       .label-text {
         font-size: 0.8em;
       }
     }
+
     .subject-column {
       width: auto;
     }
-  
+
     .hidden {
       display: none;
     }
-  
+
     .radio-group {
       display: flex;
-      flex-wrap: wrap; /* アイテムをラップさせる */
+      flex-wrap: wrap;
+      /* アイテムをラップさせる */
     }
 
     .radio-group label {
-      margin-right: 10px; /* 横並びのときのスペース */
+      margin-right: 10px;
+      /* 横並びのときのスペース */
     }
 
     /* 画面幅が狭いときのスタイル */
     @media (max-width: 600px) {
       .radio-group {
-        flex-direction: column; /* 縦に並べる */
-        align-items: flex-start; /* 左寄せ */
+        flex-direction: column;
+        /* 縦に並べる */
+        align-items: flex-start;
+        /* 左寄せ */
       }
 
       .radio-group label {
-        margin-right: 0; /* 縦並びのときのスペースを削除 */
-        margin-bottom: 10px; /* 縦並びのときのスペース */
+        margin-right: 0;
+        /* 縦並びのときのスペースを削除 */
+        margin-bottom: 10px;
+        /* 縦並びのときのスペース */
       }
     }
-    
+
     .unit-input {
       width: 30px;
     }
@@ -216,7 +238,7 @@
           <label class="Profile">学籍情報</label>
           <div class="input-profile">
             <form method="get" action="">
-              <input id="year_1" type="number" size="8" name="year" value="2024" min="2000" max="2100" step="1">
+              <input id="year_1" type="number" size="8" name="year" value="2025" min="2000" max="2100" step="1">
               <select id="month_1" name="" class="no-style-select">
                 <option value="">入学月
                 <option value=4>4月入学
@@ -248,6 +270,15 @@
               <label><input id="apply_stat_1" type="checkbox">統計</label>
               <label><input id="apply_fl1_1" type="checkbox">外語</label>
               <BR>
+              <label>仮認定単位:</label>
+              <label><input id="apply_temp_e" type="checkbox">英</label>
+              <label><input id="apply_temp_g" type="checkbox">独</label>
+              <label><input id="apply_temp_f" type="checkbox">仏</label>
+              <BR>
+              <label>英語2単位(テキストorメディア)履修完了時期:</label>
+              <BR>
+              <label>英語スクーリング受講資格:</label>
+              <BR>
               <label><input id='years' type='number' size="1" value='0' min="0" max="20">年</label>
               <input id='months' type='number' size="1" value='0' min="0" max="6" step="6">ヶ月で卒業予定</label>
             </form>
@@ -255,24 +286,24 @@
           <div id="dropdownsContainer"></div>
           <table id="PlanningTable">
             <thead>
-                <tr>
-                    <th class="term-column">受講時期</th>
-                    <th class="subject-column">A群</th>
-                    <th class="subject-column">B群</th>
-                    <th class="subject-column">C群</th>
-                    <th class="subject-column">D群</th>
-                    <th class="subject-column">E群</th>
-                    <th class="subject-column">F群</th>
-                </tr>
+              <tr>
+                <th class="term-column">受講時期</th>
+                <th class="subject-column">A群</th>
+                <th class="subject-column">B群</th>
+                <th class="subject-column">C群</th>
+                <th class="subject-column">D群</th>
+                <th class="subject-column">E群</th>
+                <th class="subject-column">F群</th>
+              </tr>
             </thead>
             <tbody></tbody>
           </table>
           <input type="file" id="csvFileInput" accept=".csv">
           <input type="button" value="読み込み" onclick="readPlanningTable()">
-          <input type="button" value="書き出し" onclick="writePlanningTable()">   
-          <input type="button" value="未入力を空白に" onclick="whiteOut()">   
+          <input type="button" value="書き出し" onclick="writePlanningTable()">
+          <input type="button" value="未入力を空白に" onclick="whiteOut()">
+        </div>
       </div>
-    </div>
     </div>
     <div class="tab_content" id="actual_content">
       <div class="tab_content_description">
@@ -305,17 +336,17 @@
           </table>
           <input type="file" id="csvFileInput2" accept=".csv">
           <input type="button" value="読み込み" onclick="readPlanningTable()">
-          <input type="button" value="書き出し" onclick="writePlanningTable()">          
+          <input type="button" value="書き出し" onclick="writePlanningTable()">
         </div>
       </div>
-    </div> 
+    </div>
     <div class="tab_content" id="input_content">
       <div class="tab_content_description">
         <div class="input">
           <label class="Profile">学籍情報</label>
           <div class="input-profile">
             <form method="get" action="">
-              <input id="year" type="number" size="8" name="year" value="2024" min="2000" max="2100" step="1">
+              <input id="year" type="number" size="8" name="year" value="2025" min="2000" max="2100" step="1">
               <select id="month" name="" class="no-style-select">
                 <option value="">入学月
                 <option value=4>4月入学
@@ -430,14 +461,15 @@
     <li>認定単位には仮認定は含みません</li>
     <li>統計学の認定単位の有無は入学時の成績証明書を確認下さい</li>
     <li>外国語の認定単位は慶應通信/通学卒業者のみ認定されます</li>
-    <li>自然科学の単位は統計学を含んだ単位数で入力下さい</li>  
+    <li>自然科学の単位は統計学を含んだ単位数で入力下さい</li>
+    <li>英語のスクーリングには履修資格がありますが、このツールの計画表では資格判定していません</li>
   </ol>
   <hr>
   <h3>このツールで判定できない卒業要件</h3>
   <ol>
     <li>必修外国語の組み合わせを判定しません</li>
     <li>重複履修等で無効になる単位数を判定しません</li>
-    <li>特別課程で認定単位がある場合に保健体育などで上限を超過する単位数を判定しません</li>  
+    <li>特別課程で認定単位がある場合に保健体育などで上限を超過する単位数を判定しません</li>
   </ol>
 </body>
 

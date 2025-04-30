@@ -463,21 +463,29 @@ function refresh(mode) {
     const deptConfig = departmentConfig[selectedDept] || {deptLabel: '-', sectLabel: '' };
         
     const courseConfig = {
-      '普通課程': {applyText: 0, courseLabel: '普' },
-      '特別課程': {applyText: 18, courseLabel: '特' },
+      '普通課程': {applyText: 0, courseLabel: '普', months_min: 48 },
+      '特別課程': {applyText: 18, courseLabel: '特', months_min: 36 },
       '学士入学': {
         applyText: (dept === '経済学部' && !document.getElementById('apply_stat').checked) ? 36 : 40,
-        courseLabel: '学'
+        courseLabel: '学',
+        months_min: 30 
       }
     };
   
     const selectedCourse = $('#course option:selected').val();
-    const crsConfig = courseConfig[selectedCourse] || {applyText: 0, courseLabel: '-' };
+    const crsConfig = courseConfig[selectedCourse] || {applyText: 0, courseLabel: '-' , months_min: 0 };
     
     labels.dept = deptConfig.deptLabel;
     labels.sect = deptConfig.sectLabel;
     labels.course = crsConfig.courseLabel;
     units[0][0] = crsConfig.applyText;
+    const months_min = crsConfig.months_min;
+
+    const months = parseInt(profile.value.years, 10) * 12 + parseInt(profile.value.months);
+    if ( months < months_min){
+      document.getElementById('years').value = Math.floor(months_min / 12)
+      document.getElementById('months').value = months_min % 12;
+    }
   }
 
   function getProfile(){
@@ -590,7 +598,7 @@ function refresh(mode) {
         }
       }  
       function filterSchedule(year, term, group, schedule) {
-        const Now = 2024;
+        const Now = 2025;
         if (year < 2019 || year > Now || !Array.isArray(schedule)) {
           return false;
         }
