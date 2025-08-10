@@ -772,8 +772,9 @@ function refresh(mode) {
       
       for (let i = 0; i < 21; i++) {
         termLabels.forEach((label, idx) => {
-          const yearSuffix = isNaN(parseInt(year)) ? (yearInd + i) : (yearInd + i + (month == 10 ? 1 : 0));
-          termLabel[i * 6 + idx] = `${yearSuffix}年度${termLabels[order[idx]]}`;
+          const yearSuffix = yearInd + i;
+          const yearAdjust = ((month == 10) && (idx % 6 >= 3)) ? 1 : 0;
+          termLabel[i * 6 + idx] = `${yearSuffix + yearAdjust}年度${termLabels[order[idx]]}`;
         });
       }
       
@@ -794,7 +795,7 @@ function refresh(mode) {
     for (let i = 0; i < PlanningRows; i++) {
         tableRows[i].style.display = (i < displayTerm) ? '' : 'none';
     }
-    tableRows[0].style.display = 'none';
+    tableRows[0].style.display = 'none';//1年目の最初の科目試験は受験資格がないので非表示
     if(month.value == 10) {
       tableRows[2].style.display = 'none'; //10月入学は1年目の秋スクを受けられない
     }
