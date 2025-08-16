@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <title>科目表検索</title>
+</head>
+
+<body>
+    <h1>科目表</h1>
+
+    <label for="year-input">年を入力してください:</label>
+    <input type="number" id="year-input" value="2025">
+    <button id="fetch-button">情報を取得</button>
+    <button id="download-csv-button" style="display: none;">CSVでDL</button>
+
+    <div id="loading" style="display: none;">読み込み中...</div>
+    <ul id="courses-list"></ul>
+
+    <script>
+        const downloadButton = document.getElementById('download-csv-button');
+        downloadButton.addEventListener('click', downloadCSV);
+        let lastFetchedCourses = []; // 取得したデータを一時的に保存する変数
+
+        document.getElementById('fetch-button').addEventListener('click', fetchCourses);
+
+        async function fetchCourses() {
+            const year = document.getElementById('year-input').value;
+            const apiUrl = `https://kcc-api.tmo1031.workers.dev/courses/${year}`;
+            const listElement = document.getElementById('courses-list');
+            const loadingElement = document.getElementById('loading');
+
+            // 以前のリストをクリア
+            listElement.innerHTML = '';
+            loadingElement.style.display = 'block';
+            downloadButton.style.display = 'none';
+
+            try {
+                // APIを呼び出し
+                const response = await fetch(apiUrl);
+                if (!response.ok) {
+                    throw new Error(`HTTPエラー: ${response.status}`);
+                }
+                const data = await response.json();
+                lastFetchedCourses = data.courses || [];
+
+                // 取得したデータをHTMLに表示
+                if (data.courses && data.courses.length > 0) {
+                    // テーブルを作成
+                    const table = document.createElement('table');
+                    table.setAttribute('border', '1'); // 見やすくするためにボーダーを追加
+
+                    // テーブルヘッダーを作成
+                    const thead = table.createTHead();
+                    const headerRow = thead.insertRow();
+                    const headers = ['授業形態', '大分類', '中分類', '区分', '科目名', '配本', '群', '単位数'];
+                    headers.forEach(text => {
+                        const th = document.createElement('th');
+                        th.textContent = text;
+                        headerRow.appendChild(th);
+                    });
+
+                    // テーブルボディを作成
+                    const tbody = table.createTBody();
+                    data.courses.forEach(course => {
+                        const row = tbody.insertRow();
+
+                        // 各セルにデータを挿入
+                        const cells = [
+                            course.form_desc,
+                            course.category_desc,
+                            course.subcategory_desc,
+                            course.type_name,
+                            course.course_title,
+                            course.level_id,
+                            course.group_id,
+                            course.credits
+                        ];
+
+                        cells.forEach(cellData => {
+                            const cell = row.insertCell();
+                            cell.textContent = cellData;
+                        });
+                    });
+
+                    listElement.appendChild(table);
+                } else {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = '該当する講義情報はありませんでした。';
+                    listElement.appendChild(listItem);
+                }
+                if (lastFetchedCourses.length > 0) {
+                    // データが存在する場合のみ、ダウンロードボタンを表示
+                    downloadButton.style.display = 'block';
+                }
+            } catch (error) {
+                console.error('データの取得に失敗しました:', error);
+                const listItem = document.createElement('li');
+                listItem.textContent = 'データの取得中にエラーが発生しました。';
+                listElement.appendChild(listItem);
+            } finally {
+                loadingElement.style.display = 'none';
+            }
+        }
+
+        // CSVをダウンロードする関数
+        function downloadCSV() {
+            // データがない場合は何もしない
+            if (lastFetchedCourses.length === 0) {
+                return;
+            }
+
+            // ヘッダー行を定義
+            const headers = ['授業形態', '大分類', '中分類', '区分', '科目名', '配本', '群', '単位数'];
+
+            // CSV文字列の組み立て
+            // ヘッダー行の作成
+            const headerLine = headers.join(',');
+
+            // データ行の作成
+            const dataLines = lastFetchedCourses.map(course => {
+                const row = [
+                    course.form_desc,
+                    course.category_desc,
+                    course.subcategory_desc,
+                    course.type_name,
+                    course.course_title,
+                    course.level_id,
+                    course.group_id,
+                    course.credits
+                ];
+                // ダブルクォーテーションで囲み、カンマや改行に対応
+                return row.map(cell => `"${cell}"`).join(',');
+            });
+
+            const csvContent = '\ufeff' + [headerLine, ...dataLines].join('\n');
+
+            // ファイルとしてダウンロード
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+
+            if (link.download !== undefined) {
+                const url = URL.createObjectURL(blob);
+                link.setAttribute('href', url);
+                link.setAttribute('download', `courses_${new Date().getFullYear()}.csv`);
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        }
+    </script>
+</body>
+
+</html>
