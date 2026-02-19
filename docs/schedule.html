@@ -55,6 +55,16 @@
             display: block;
         }
 
+        .mermaid .sectionText,
+        .mermaid .taskText {
+            writing-mode: vertical-rl;
+            /* 縦書き（右から左） */
+            text-orientation: upright;
+            /* 文字の向きを正立させる */
+            glyph-orientation-vertical: 0;
+            font-size: 12px;
+        }
+
         @media (max-width: 600px) {
             .mermaid {
                 padding: 10px 0;
