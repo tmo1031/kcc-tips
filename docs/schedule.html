@@ -16,7 +16,15 @@
     <title>慶應通信スケジュール</title>
     <script type="module">
         import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
-        mermaid.initialize({ startOnLoad: true });
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true
+            },
+            secure: false
+        });
     </script>
     <style>
         body {
@@ -28,14 +36,36 @@
         .content {
             width: 100%;
             padding: 20px;
-            aspect-ratio: 16 / 9;
+            aspect-ratio: 4 / 3;
             object-fit: cover;
         }
 
+        .mermaid {
+            width: 100%;
+            max-width: 100%;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+        }
+
+        .mermaid svg {
+            width: 100% !important;
+            height: auto !important;
+            max-width: 100%;
+            display: block;
+        }
+
         @media (max-width: 600px) {
+            .mermaid {
+                padding: 10px 0;
+                /* 画面端に密着しすぎないように */
+            }
+
             .content {
                 width: 100%;
                 padding: 5px;
+                aspect-ratio: 4 / 3;
+                object-fit: cover;
             }
         }
     </style>
