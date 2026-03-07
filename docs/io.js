@@ -598,7 +598,7 @@ function refresh(mode) {
         }
       }  
       function filterSchedule(year, term, group, schedule) {
-        const Now = 2025;
+        const Now = 2026;
         if (year < 2019 || year > Now || !Array.isArray(schedule)) {
           return false;
         }
