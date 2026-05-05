@@ -1,0 +1,62 @@
+name: makethesis
+on: 
+  push:
+    paths:
+      - 'thesis/**.md'
+      - 'thesis/**.txt'
+
+# ワークフローにリポジトリへの書き込み権限を与える
+permissions:
+  contents: write
+
+jobs:
+  build-pdf-job:
+    runs-on: ubuntu-latest
+    container:
+      image: paperist/alpine-texlive-ja:latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Pandoc & pandoc-crossref (Fixed Version)
+        run: |
+          # 1. 必要なツールと互換レイヤー(gcompat)のインストール
+          apk add --no-cache curl tar xz gmp libffi gcompat
+          
+          # 2. Pandoc v3.1.2 のインストール
+          PANDOC_VER="3.1.2"
+          echo "Installing Pandoc ${PANDOC_VER}..."
+          curl -L "https://github.com/jgm/pandoc/releases/download/${PANDOC_VER}/pandoc-${PANDOC_VER}-linux-amd64.tar.gz" -o pandoc.tar.gz
+          tar -xzf pandoc.tar.gz --strip-components 1 -C /usr/local/
+          
+          # 3. pandoc-crossref v0.3.17.1 のインストール
+          # このバージョンの正しいファイル名は linux-amd64.tar.xz です
+          CROSSREF_VER="v0.3.17.1"
+          echo "Installing pandoc-crossref ${CROSSREF_VER}..."
+          curl -L "https://github.com/lierdakil/pandoc-crossref/releases/download/v0.3.17.1/pandoc-crossref-Linux.tar.xz" -o pandoc-crossref.tar.xz
+          
+          # 解凍してバイナリを配置
+          tar -xJf pandoc-crossref.tar.xz
+          mv pandoc-crossref /usr/local/bin/
+          chmod +x /usr/local/bin/pandoc-crossref
+
+      - name: Check versions
+        run: |
+          pandoc --version
+          pandoc-crossref --version
+
+      - name: add executable permission
+        run: chmod +x thesis/20.Bin/makethesis.sh
+        working-directory: ${{ github.workspace }}
+      - name: Markdown to pdf
+        run: ./thesis/20.Bin/makethesis.sh
+        working-directory: ${{ github.workspace }}
+      - name: Upload PDF as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          # アーティファクトの名前（ダウンロード時のzipファイル名になります）
+          name: thesis-pdf
+
+          # 保存したい生成済みPDFファイルのパス
+          path: thesis/20.Bin/thesis.pdf
