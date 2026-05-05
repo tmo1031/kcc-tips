@@ -1,0 +1,268 @@
+\documentclass[uplatex,oneside,dvipdfmx]{jsbook}
+
+\usepackage[truedimen,top=30truemm,bottom=18truemm,hmargin=27truemm]{geometry}
+\setlength\fullwidth{40zw}
+\setlength\textwidth{\fullwidth}
+\setlength{\evensidemargin}{\oddsidemargin}
+\setlength\footskip{0truemm}
+
+\usepackage{setspace}
+\setstretch{1} % ページ全体の行間を設定
+\pagestyle{plain}
+
+\setcounter{tocdepth}{2}
+
+%% natbib.sty を使う．
+\usepackage{natbib}
+
+\usepackage{longtable}
+\usepackage{booktabs}
+
+\usepackage[utf8]{inputenc}
+\usepackage[prefernoncjk]{pxcjkcat}
+\usepackage{atbegshi}
+\AtBeginShipoutFirst{\special{pdf:tounicode  UTF8-UCS2}}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{ulem}
+
+\usepackage[dvipdfmx]{hyperref}
+\usepackage{pxjahyper}
+
+\hypersetup{ % ハイパーリンクの設定
+  pdfborder={0 0 0},
+}
+
+\usepackage[american]{babel}
+\usepackage{csquotes}
+\usepackage{url}
+\usepackage{semtrans}
+
+\bibliographystyle{myjecon}
+
+\usepackage{endnotesj}
+%\renewcommand{\footnote}{\endnote} % footnote を endnote として使う
+%\renewcommand{\notesname}{本文註} % Notes を註に変更する
+%\patchcmd{\enoteformat}{1.8em}{0pt}{}{}
+%\renewcommand{\bibname}{参考文献}
+%\renewcommand\refname{参考文献}
+\renewcommand{\figurename}{図.}
+\renewcommand{\tablename}{表.}
+\def\tightlist{}
+
+\usepackage{bxwareki} % 日付を日本語で表示
+
+% 節（section）の番号付けを単純な連番にする
+\renewcommand{\thesection}{\arabic{section}}
+% 小節（subsection）の番号付けを「節番号.小節番号」形式にする
+% （もしこれを「章番号.節番号.小節番号」に戻したい場合は、この行を削除またはコメントアウトしてください）
+\renewcommand{\thesubsection}{\thesection.\arabic{subsection}}
+% 小々節（subsubsection）の番号付けを「小節番号.小々節番号」形式にする
+% （もしこれを「章番号.節番号.小節番号.小々節番号」に戻したい場合は、この行を削除またはコメントアウトしてください）
+\renewcommand{\thesubsubsection}{\thesubsection.\arabic{subsubsection}}
+
+\makeatletter
+\renewcommand{\notesname}{本文註} % Notes を註に変更する
+\patchcmd{\enoteformat}{1.8em}{0pt}{}{}
+
+%\@addtoreset{endnote}{chapter} % 章毎のカウンタリセット
+
+\def\enoteheading{\chapter*{\notesname %目次に後注を入れる
+  \@mkboth{\MakeUppercase{\notesname}}{\MakeUppercase{\notesname}}}%
+  \addcontentsline{toc}{chapter}{\notesname}
+  \mbox{}\par\vskip-\baselineskip}
+\makeatother
+
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\makeatother
+
+\makeatletter
+
+%%% 参考文献のスタイルをカスタマイズ
+
+% 目次でのインデントを合わせる
+\renewenvironment{thebibliography}[1]{%
+%  \@jsc@warnoldfontcmdexceptiontrue%
+% \global\let\presectionname\relax
+% \global\let\postsectionname\relax
+%    \chapter{\bibname}%
+   \chapter*{\bibname}\@mkboth{\bibname}{}%
+%  \addcontentsline{toc}{chapter}{\protect\numberline{\null}\bibname}% ここを変えた
+  \addcontentsline{toc}{chapter}{\bibname}% ここを変えた
+   \list{\@biblabel{\@arabic\c@enumiv}}%
+        {\settowidth\labelwidth{\@biblabel{#1}}%
+         \leftmargin\labelwidth
+         \advance\leftmargin\labelsep
+         \@openbib@code
+         \usecounter{enumiv}%
+         \let\p@enumiv\@empty
+         \renewcommand\theenumiv{\@arabic\c@enumiv}}%
+   \sloppy
+   \clubpenalty4000
+   \@clubpenalty\clubpenalty
+   \widowpenalty4000%
+   \sfcode`\.\@m}
+  {\def\@noitemerr
+    {\@latex@warning{Empty `thebibliography' environment}}%
+   \endlist}
+
+\makeatother
+
+\usepackage{amssymb}
+
+$if(title)$
+\title{$title$$if(thanks)$\thanks{$thanks$}$endif$}
+$endif$
+$if(subtitle)$
+$if(beamer)$
+$else$
+\usepackage{etoolbox}
+\makeatletter
+\providecommand{\subtitle}[1]{% add subtitle to \maketitle
+\apptocmd{\@title}{\par {\large #1 \par}}{}{}
+}
+\makeatother
+$endif$
+\subtitle{$subtitle$}
+$endif$
+\author{$department$ \\ 学籍番号: $student_id$ \\ $for(author)$$author$$sep$ \and $endfor$ \\ \\ 指導教員 $supervisor$}
+\date{$date$ \linebreak $version$}
+$if(beamer)$
+$if(institute)$
+\institute{$for(institute)$$institute$$sep$ \and $endfor$}
+$endif$
+$if(titlegraphic)$
+\titlegraphic{\includegraphics{$titlegraphic$}}
+$endif$
+$if(logo)$
+\logo{\includegraphics{$logo$}}
+$endif$
+$endif$
+
+\begin{document}
+$if(has-frontmatter)$
+\frontmatter
+$endif$
+$if(title)$
+$if(beamer)$
+\frame{\titlepage}
+$else$
+%\maketitle
+\begin{titlepage}
+    \centering
+    \vspace{1em}
+    {\LARGE $year$ \par} % ここに年度を大きく表示
+    \vspace*{\fill} % 上部にスペースを入れる
+
+    {\Huge $title$ \par} % タイトル
+    \vspace{2em}
+    {\LARGE $subtitle$ \par} % サブタイトル
+    \vspace{2em}
+    {\Large $date$ $version$ \par} % バージョン
+
+    \vspace*{\fill} % 下部にスペースを入れる
+    {\Large $department$ \par} % 学部
+    \vspace{2em}
+    {\Large 学籍番号　$student_id$ \par} % 学籍番号
+    \vspace{2em}
+    {\Large $author$ \par} % 著者
+    \vspace{2em}
+    {\Large 指導教員　$supervisor$ \par} % 指導教員
+    \vspace{5em}
+\end{titlepage}
+$endif$
+$if(abstract)$
+\begin{abstract}
+\begin{center}
+{\LARGE 要旨 \par}
+\end{center}
+$abstract$
+\end{abstract}
+$endif$
+$endif$
+
+$if(toc)$
+$if(toc-title)$
+\renewcommand*\contentsname{$toc-title$}
+$endif$
+%\addcontentsline{toc}{Chapter}{$toc-title$}
+$if(beamer)$
+\begin{frame}[allowframebreaks]
+$if(toc-title)$
+\frametitle{$toc-title$}
+$endif$
+\tableofcontents[hideallsubsections]
+\end{frame}
+$else$
+{
+$if(colorlinks)$
+\hypersetup{linkcolor=$if(toccolor)$$toccolor$$else$$endif$}
+$endif$
+\setcounter{tocdepth}{$toc-depth$}
+\tableofcontents
+}
+$endif$
+$endif$
+$if(lof)$
+\listoffigures
+$endif$
+$if(lot)$
+\listoftables
+$endif$
+$if(linestretch)$
+\setstretch{$linestretch$}
+$endif$
+$if(has-frontmatter)$
+\mainmatter
+$endif$
+
+$for(include-before)$
+$include-before$
+$endfor$
+
+$body$
+
+$if(has-frontmatter)$
+\backmatter
+\newpage
+$endif$
+
+%\newpage
+%\begingroup
+%\parindent 0pt 
+%\parskip 2ex 
+%\def\enotesize{\normalsize} 
+%\theendnotes
+%\endgroup
+
+$if(referenceall)$
+\nocite{*}
+$endif$
+
+$if(natbib)$
+$if(bibliography)$
+$if(biblio-title)$
+$if(has-chapters)$
+\renewcommand\bibname{$biblio-title$}
+$else$
+\renewcommand\refname{$biblio-title$}
+$endif$
+$endif$
+$if(beamer)$
+\begin{frame}[allowframebreaks]{$biblio-title$}
+\bibliographytrue
+$endif$
+\bibliography{$for(bibliography)$$bibliography$$sep$,$endfor$}
+$if(beamer)$
+\end{frame}
+$endif$
+
+$endif$
+$endif$
+
+$for(include-after)$
+$include-after$
+
+$endfor$
+\end{document}

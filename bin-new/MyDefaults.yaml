@@ -1,0 +1,9 @@
+from: markdown-auto_identifiers
+resource-path: ['./']
+template: ./default.latex
+number-sections: true
+citeproc: true
+cite-method: natbib
+top-level-division: chapter
+include-before-body: ../Other/Acknow.md
+include-after-body: ../Other/Append.md

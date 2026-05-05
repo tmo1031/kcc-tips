@@ -1,0 +1,22 @@
+---
+metadata:
+year: 202X年度
+title: %題目%
+subtitle: %副題%
+department: %自分の学部%
+student_id: %自分の学籍番号%
+author: %自分の名前%
+supervisor: %担当教員名%
+date: \warekicustomdate{}
+version: v0.x.y
+bibliography: ../lib/thesis.bib
+biblio-style: mla
+csl: harvard
+referenceall: False
+toc: True
+toc-title: 目次
+biblio-title: 文献目録
+has-frontmatter: True
+abstract: | 
+    ここに要旨のようなものを書いておくと博論っぽくなります
+---
